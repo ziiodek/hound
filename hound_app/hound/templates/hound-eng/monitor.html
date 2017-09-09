@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="images/favicon.ico">
+ <link href="css/bootstrap.min.css" rel="stylesheet">
+ <link rel="stylesheet" href="fonts/font-awesome/css/font-awesome.min.css">
+ <link href="css/custom.css" rel="stylesheet">
+</head>
+<body>
+<div class="jumbotron">
+  <div class="container-fluid ">
+    <ul class="nav navbar-nav" style="margin-left:1px;">
+     <a href="#"><img src="images/hound-icon.png" class="header-img" /></a>
+    </ul>
+		  <ul class="nav navbar-nav navbar-right second-menu-icons" style="margin-left:2px;">
+		<a href="#" style="font-size:14pt;">Log out</a>
+		<br><div class="navbar-right" style="margin-right:2px;"><a href="#" ><i class="fa fa-cog" aria-hidden="true"></i></a></div>
+    </ul>
+	<br>		  
+  </div>
+</div>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <ul class="nav navbar-nav">
+      <li ><a href="#">Track</a></li>
+      <li class="active"><a href="#">Monitor</a></li>
+      <li><a href="#">Assets</a></li>
+    </ul>
+  </div>
+</nav>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <ul class="nav navbar-nav second-menu-icons">
+      <li class="active"><a href="#"><i class="fa fa-car" aria-hidden="true"></i></a></li>
+    </ul>
+	  <ul class="nav navbar-nav navbar-right second-menu-icons" style="margin-right:2px; margin-left:2px;">
+      <a href="#search_bar" data-toggle="collapse"><i class="fa fa-search" aria-hidden="true"></i></a>
+
+    </ul>
+  </div>
+</nav>
+<div class="search-bar text-right collapse" id="search_bar">
+<form>
+<div class="form-inline">
+  <div class="form-group form-group">
+    <label>Economic No:</label>
+    <input type="text" class="form-control" id="economic_no" placeholder="Economic No.">
+  </div>
+  
+  </div>
+   <button type="submit" class="btn btn-default">Search</button>
+</form>
+</div>
+<div class="container">
+<br>
+<br>
+
+<div class="video-container center-horizontaly" style="max-width:800px;">
+<video  class="video" controls>
+<!--
+<source src="mov_bbb.mp4" type="video/mp4">
+uncomment this for load a video
+-->
+  Your browser does not support the video tag.
+</video>
+</div>
+<br>
+<br>
+  <div class="icons text-right" style="font-size:30px;">
+	<a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i></a>
+	</div>
+	<div class="table-responsive">          
+  <table class="table custom-table">
+  <thead>
+  <tr>
+  <th>
+Economic No.
+  </th>
+   <th>
+
+  </th>
+   <th>
+
+  </th>
+   <th>
+
+  </th>
+     <th>
+
+  </th>
+  </tr>
+  </thead>
+  <tbody class="camera">
+<tr>
+ <td>
+01
+  </td>
+   <td>
+  <a href="">Frontal camera</a>
+  </td>
+   <td>
+<a href="">Rear camera</a>
+  </td>
+   <td>
+<a href="">Fuel Tank Camera</a>
+  </td>
+     <td>
+<a href="">Car Hood</a>
+  </td>
+</tr>
+  </tbody>
+  </table>
+  <ul class="pagination navbar-right">
+  <li><a href="#">Prev</a></li>
+  <li><a href="#">2</a></li>
+  <li><a href="#">3</a></li>
+  <li><a href="#">4</a></li>
+  <li><a href="#">5</a></li>
+  <li><a href="#">Next</a></li>
+</ul>
+  </div>
+<br>
+<br>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+ <script src="js/bootstrap.min.js"></script>
+  <script src="js/events.js"></script>
+</body>
+</html>

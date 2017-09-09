@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+{% load widget_tweaks %}
+{% load static %}
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="icon" href="{% static 'hound/images/favicon.ico'%}">
+ <link href="{% static 'hound/css/bootstrap.min.css' %}" rel="stylesheet">
+     <link href="{% static 'hound/css/bootstrap-datetimepicker.min.css' %}" rel="stylesheet">
+     <link href="{% static 'hound/css/bootstrap-timepicker.min.css' %}" rel="stylesheet">
+ <link rel="stylesheet" href="{% static 'hound/fonts/font-awesome/css/font-awesome.min.css' %}">
+ <link href="{% static 'hound/css/custom.css' %}" rel="stylesheet">
+</head>
+<body>
+
+<div class="jumbotron">
+  <div class="container-fluid ">
+    <ul class="nav navbar-nav" style="margin-left:1px;">
+     <a href="/drivers/1/0/"><img src="{% static 'hound/images/hound-icon.png' %}" class="header-img" /></a>
+     <br><br>&nbsp;<a href="/assign_trip/0/0/0/" style="font-size:12pt;">ENG</a>
+
+    </ul>
+		  <ul class="nav navbar-nav navbar-right second-menu-icons" style="margin-left:2px;">
+		<a href="/logout/1/" style="font-size:14pt;">Cerrar Sesión</a>
+		<br><div class="navbar-right" style="margin-right:2px;"><a href="/settings/1/" ><i class="fa fa-cog" aria-hidden="true"></i></a></div>
+    </ul>
+	<br>		  
+  </div>
+</div>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <ul class="nav navbar-nav">
+      <li  class="active"><a href="/trip_status/1/">Rastreo</a></li>
+      <li><a href="#">Monitoreo</a></li>
+      <li><a href="/drivers/1/0/">Assets</a></li>
+    </ul>
+  </div>
+</nav>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <ul class="nav navbar-nav second-menu-icons">
+      <li><a href="#"><i class="fa fa-wrench" aria-hidden="true"></i></a></li>
+      <li class="active"><a href="/trip_status/1/"><i class="fa fa-road" aria-hidden="true"></i></a></li>
+      <li><a href="/bitacora/1/"><i class="fa fa-file-text-o" aria-hidden="true"></i></a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+<br>
+<br>
+  <div class="center-horizontaly" style="max-width:650px;">
+
+  <form action = "/assign_trip/1/0/0/" method = "post" class="form-horizontal form-container">
+                    {% if messages%}
+     {% for message in messages %}
+    <div class="alert alert-danger">
+  <strong>Error!</strong>
+        {{ message }}
+</div>
+    {% endfor %}
+    {% endif %}
+      {% csrf_token %}
+  <h3>
+  Asignar Viaje
+  </h3>
+  <br>
+<div class="row">
+  	 <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+          <label style="font-size:20px;">Conductor</label>
+	 	 <center>
+             <img class="img-responsive form-img" src="{% static driver %}" style="width:150px; height:150px; border-radius:150px;" >
+             </center>
+	 <br>
+          <label style="font-size:20px;">Vehiculo</label>
+         <center>
+	  <img class="img-responsive form-img" src="{% static vehicle %}" style="width:150px; height:150px; border-radius:150px;">
+	   </center>
+	 <br>
+	 <br>
+	</div>
+	
+ <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+   <div class="form-group two-column-form">
+    <label class="control-label col-sm-6" >*Id Asignado:</label>
+         <input type="hidden" value="{{lenguage}}" id="lenguage">
+    <div class="col-sm-6">
+        {{formTrip.assigned_id|add_class:'form-control'|attr:'placeholder:Id Asignado'|attr:'onchange:select_profiles();'}}
+
+    </div>
+  </div>
+    <div class="form-group two-column-form">
+    <label class="control-label col-sm-6">*No. Económico del Vehiculo:</label>
+    <div class="col-sm-6">
+        {{formTrip.vehicle_no|add_class:'form-control'|attr:'placeholder:No. Eco. del Vehiculo'|attr:'onchange:select_profiles();'}}
+    </div>
+  </div>
+         <div class="form-group two-column-form">
+    <label class="control-label col-sm-6">No. Económico de Caja:</label>
+    <div class="col-sm-6">
+        {{formTrip.trailer_no|add_class:'form-control'|attr:'placeholder:No. Eco. de Caja'}}
+    </div>
+  </div>
+      <div class="form-group two-column-form">
+    <label class="control-label col-sm-6">*Origen:</label>
+    <div class="col-sm-6">
+         {{formTrip.origin|add_class:'form-control'|attr:'placeholder:Origen'}}
+    </div>
+  </div>
+
+           <div class="form-group two-column-form">
+    <label class="control-label col-sm-6">*Destino:</label>
+    <div class="col-sm-6">
+         {{formTrip.destiny|add_class:'form-control'|attr:'placeholder:Destino'}}
+    </div>
+  </div>
+
+           <div class="form-group two-column-form">
+    <label class="control-label col-sm-6">*Fecha:</label>
+    <div class="col-sm-6">
+        	 <div class='input-group date date-pick datepicker' data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                      {{formTrip.date|add_class:'form-control'|attr:'placeholder:Date'}}
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+
+    </div>
+  </div>
+
+           <div class="form-group two-column-form">
+    <label class="control-label col-sm-6">Hora de salida:</label>
+    <div class="col-sm-6">
+                    <div class="input-group bootstrap-timepicker timepicker" style="margin-right:15px;">
+                         {{formTrip.start_time|add_class:'form-control'|add_class:'input-small'|attr:'placeholder:Start Time'|attr:'id:timepicker1'}}
+
+            <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+        </div>
+
+    </div>
+  </div>
+
+                <div class="form-group two-column-form">
+    <label class="control-label col-sm-6">Hora de llegada:</label>
+    <div class="col-sm-6">
+                    <div class="input-group bootstrap-timepicker timepicker" style="margin-right:15px;">
+                         {{formTrip.end_time|add_class:'form-control'|add_class:'input-small'|attr:'placeholder:End Time'|attr:'id:timepicker2'}}
+
+            <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+        </div>
+
+    </div>
+  </div>
+
+      <div class="form-group two-column-form">
+    <label class="control-label col-sm-6">*Tipo de Viaje:</label>
+    <div class="col-sm-6">
+      {{formTrip.trip_type|add_class:'form-control'|attr:'placeholder:Tipo de Viaje'}}
+    </div>
+  </div>
+ <div class="form-inline two-column-form navbar-right">
+ <button type="submit" class="btn btn-primary">Asignar</button>
+  <a href="/trip_status/1/"><button type="button" class="btn btn-primary">Cancelar</button></a>
+ </div>
+  </div>
+
+
+</form>
+</div>
+ 
+<br>
+<br>
+</div>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+ <script src="{% static 'hound/js/bootstrap.min.js' %}"></script>
+ <script src="{% static 'hound/js/bootstrap-datetimepicker.js' %}"></script>
+ <script src="{% static 'hound/js/bootstrap-timepicker.js' %}"></script>
+ <script src="{% static 'hound/locales/bootstrap-datetimepicker.fr.js' %}"></script>
+ <script src="{% static 'hound/js/datepicker.js' %}"></script>
+ <script src="{% static 'hound/js/select_profiles.js' %}"></script>
+<script src="{% static 'hound/js/select_profiles_helper.js' %}"></script>
+<script>
+
+window.onload  = function() {
+load_profiles("{{assigned_id}}","{{economic_no}}");
+
+};
+</script>
+        <script type="text/javascript">
+            $('#timepicker1').timepicker();
+        </script>
+        <script type="text/javascript">
+            $('#timepicker2').timepicker();
+        </script>
+
+</body>
+</html>

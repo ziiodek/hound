@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+{% load widget_tweaks %}
+{% load static %}
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="icon" href="{% static 'hound/images/favicon.ico' %}">
+ <link href="{% static 'hound/css/bootstrap.min.css' %}" rel="stylesheet">
+ <link rel="stylesheet" href="{% static 'hound/fonts/font-awesome/css/font-awesome.min.css' %}">
+ <link href="{% static 'hound/css/custom.css' %}" rel="stylesheet">
+
+</head>
+<body class="registration-background">
+<div class="jumbotron">
+  <div class="container-fluid ">
+    <ul class="nav navbar-nav" style="margin-left:1px; font-size:40px;">
+     <a href="/esp/"><i class="fa fa-paw" aria-hidden="true"></i></a><br>
+         <a href="/registration/0/" style="font-size:12pt;">ING</a>
+    </ul>
+			  <ul class="nav navbar-nav navbar-right second-menu-icons " style="margin-left:2px;">
+		<a href="/email/1/" style="font-size:12pt;">Iniciar Sesión</a><br>
+    </ul>
+	<br>		  
+  </div>
+</div>
+<div class="center-verticaly-container">
+<div class="container center-verticaly">
+<div style="max-width:400px;" class="main-forms-container center-horizontaly">
+<form class="form-horizontal" action="/registration/1/" method="post">
+
+        {% if messages%}
+     {% for message in messages %}
+    <div class="alert alert-danger">
+  <strong>Error!</strong>
+        {{ message }}
+</div>
+    {% endfor %}
+    {% endif %}
+     {% csrf_token %}
+<center>
+<img src="{% static 'hound/images/hound-logo.png' %}" class="img-responsive img-logo" />
+</center>
+<br>
+   <div class="form-group">
+    <label class="control-label col-sm-6">*Nombre:</label>
+    <div class="col-sm-6">
+        {% render_field registrationForm.name class="form-control" placeholder="Nombre" %}
+    </div>
+  </div>
+    <div class="form-group">
+    <label class="control-label col-sm-6">*Apellido:</label>
+    <div class="col-sm-6">
+         {% render_field registrationForm.last_name class="form-control" placeholder="Apellido" %}
+    </div>
+  </div>
+
+        <div class="form-group">
+    <label class="control-label col-sm-6">Compañia:</label>
+    <div class="col-sm-6">
+         {% render_field registrationForm.company class="form-control" placeholder="Compañia (opcional)" %}
+    </div>
+  </div>
+
+      <div class="form-group">
+    <label class="control-label col-sm-6" >*Correo Electrónico:</label>
+    <div class="col-sm-6">
+        {%render_field registrationForm.email class="form-control" placeholder="Correo Electrónico" %}
+    </div>
+  </div>
+      <div class="form-group">
+    <label class="control-label col-sm-6">*Contraseña:</label>
+    <div class="col-sm-6">
+        {% render_field registrationForm.tmp_password class="form-control" id="password" type="search" placeholder="Contraseña" %}
+    </div>
+  </div>
+      <div class="form-group">
+    <label class="control-label col-sm-6" >*Reescribir Contraseña:</label>
+    <div class="col-sm-6">
+        {% render_field registrationForm.retype class="form-control" placeholder="Contraseña" %}
+
+    </div>
+  </div>
+  <center><button type="submit" class="btn btn-primary" onclick="compare_passwords()">Registrarse</button></center>
+</form>
+</div>
+</div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+ <script src="{% static 'hound/js/bootstrap.min.js' %}"></script>
+ <script src="{% static 'hound/js/authenticator.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+{% load static %}
+{% load widget_tweaks %}
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="{% static 'hound/images/favicon.ico' %}">
+ <link href="{% static 'hound/css/bootstrap.min.css' %}" rel="stylesheet">
+ <link rel="stylesheet" href="{% static 'hound/fonts/font-awesome/css/font-awesome.min.css' %}">
+ <link href="{% static 'hound/css/custom.css' %}" rel="stylesheet">
+
+</head>
+<body>
+
+<div class="jumbotron">
+  <div class="container-fluid ">
+    <ul class="nav navbar-nav" style="margin-left:1px;">
+     <a href="/drivers/0/0/"><img src="{% static 'hound/images/hound-icon.png' %}" class="header-img" /></a>
+        <br><br>&nbsp;&nbsp;<a href="/view_trailer/1/{{economic_no}}/" style="font-size:12pt;">ESP</a>
+    </ul>
+		  <ul class="nav navbar-nav navbar-right second-menu-icons" style="margin-left:2px;">
+		<a href="/logout/0/" style="font-size:14pt;">Log out</a>
+		<br><div class="navbar-right" style="margin-right:2px;"><a href="/settings/0/" ><i class="fa fa-cog" aria-hidden="true"></i></a></div>
+    </ul>
+	<br>		  
+  </div>
+</div>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <ul class="nav navbar-nav">
+      <li><a href="/trip_status/0/">Track</a></li>
+      <li><a href="#">Monitor</a></li>
+      <li class="active"><a href="/drivers/0/0/">Assets</a></li>
+    </ul>
+  </div>
+</nav>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+
+           {% if active %}
+
+                                <ul class="nav navbar-nav second-menu-icons">
+     <li ><a href="/archiver_vehicles/0/1/"><i class="fa fa-car" aria-hidden="true"></i></a></li>
+	   <li class="active"><a href="/archiver_trailers/0/1/"><i class="fa fa-truck" aria-hidden="true"></i></a></li>
+	   <li ><a href="/archiver_drivers/0/1/"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a></li>
+    </ul>
+
+      {% else %}
+                               <ul class="nav navbar-nav second-menu-icons">
+      <li ><a href="/vehicles/0/0/"><i class="fa fa-car" aria-hidden="true"></i></a></li>
+	   <li class="active"><a href="/trailers/0/0/"><i class="fa fa-truck" aria-hidden="true"></i></a></li>
+	   <li><a href="/drivers/0/0/"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a></li>
+	    <li><a href="/archiver_drivers/0/1/"><i class="fa fa-folder-open" aria-hidden="true"></i></a></li>
+    </ul>
+      {% endif %}
+
+
+  </div>
+</nav>
+
+<div class="container">
+<br>
+<br>
+  <div class="center-horizontaly" style="max-width:1000px;">
+
+  <form class="form-horizontal form-container">
+  	   <div class="form-inline icons-inverse navbar-right" style="font-size:30px;">
+			<a href="/edit_trailer/0/{{economic_no}}/"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+			{% if active %}
+           <a href="/restore_trailer/0/{{economic_no}}/"><i class="fa fa-repeat" aria-hidden="true"></i></a>
+           {% endif %}
+           <a href="/delete_trailer/0/{{economic_no}}/"><i class="fa fa-times" aria-hidden="true"></i></a>
+		</div>
+  <h3>
+  Trailer Profile
+  </h3>
+  <br>
+  <br>
+<div class="row">
+  	 <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+         <center>
+          <label style="font-size:20px;">Profile Image</label>
+	 <img class="img-responsive" src="{% static profile %}" style="width:150px; height:150px; border-radius:150px;"></center>
+	  <br>
+	  <br>
+	</div>
+ <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+    <div class="form-group two-column-form">
+    <label class="control-label col-sm-4" >Economic No:</label>
+    <div class="col-sm-8">
+        {{formTrailer.economic_no|add_class:'form-control'|attr:'placeholder:Economic No'|attr:'disabled'}}
+    </div>
+  </div>
+   <div class="form-group two-column-form">
+    <label class="control-label col-sm-4" >Plate No:</label>
+    <div class="col-sm-8">
+         {{formTrailer.plate_no|add_class:'form-control'|attr:'placeholder:Plate No'|attr:'disabled'}}
+    </div>
+  </div>
+
+        <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Country:</label>
+    <div class="col-sm-3" >
+         {{formTrailer.country|add_class:'form-control'|attr:'placeholder:Country'|attr:'disabled'}}
+    </div>
+  </div>
+
+    <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">State:</label>
+    <div class="col-sm-8">
+         {{formTrailer.state|add_class:'form-control'|attr:'placeholder:State'|attr:'disabled'}}
+    </div>
+  </div>
+      <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Year:</label>
+    <div class="col-sm-5" style="padding-left:10px;">
+         {{formTrailer.year|add_class:'form-control'|attr:'placeholder:Year'|attr:'disabled'}}
+    </div>
+  </div>
+  
+        <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Capacity:</label>
+    <div class="col-sm-8">
+         {{formTrailer.capacity|add_class:'form-control'|attr:'placeholder:Capacity'|attr:'disabled'}}
+    </div>
+  </div>
+  
+    
+        <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Client Name:</label>
+    <div class="col-sm-8">
+         {{formTrailer.client_name|add_class:'form-control'|attr:'placeholder:Client Name'|attr:'disabled'}}
+    </div>
+  </div>
+             <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Client Last Name:</label>
+    <div class="col-sm-8">
+         {{formTrailer.client_last_name|add_class:'form-control'|attr:'placeholder:Client Last Name'|attr:'disabled'}}
+    </div>
+  </div>
+  </div>
+   <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+
+               <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Type:</label>
+    <div class="col-sm-8">
+       {{formTrailer.type|add_class:'form-control'|attr:'placeholder:Type'|attr:'disabled'}}
+    </div>
+  </div>
+
+   <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Use:</label>
+    <div class="col-sm-8">
+        {{formTrailer.use|add_class:'form-control'|attr:'placeholder:Use'|attr:'disabled'}}
+    </div>
+  </div>
+           <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Service Start Date:</label>
+    <div class="col-sm-8">
+         <div class='input-group date date-pick' >
+                    {{formTrailer.start_service_date|add_class:'form-control'|attr:'placeholder:Service Start Date'|attr:'disabled'}}
+                    <span class="input-group-addon" >
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+    </div>
+  </div>
+
+             <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Service End Date:</label>
+    <div class="col-sm-8">
+         <div class='input-group date date-pick'>
+                    {{formTrailer.end_service_date|add_class:'form-control'|attr:'placeholder:Service End Date'|attr:'disabled'}}
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+    </div>
+  </div>
+  
+    <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Status:</label>
+    <div class="col-sm-8">
+         {{formTrailer.status|add_class:'form-control'|attr:'placeholder:Status'|attr:'disabled'}}
+    </div>
+  </div>
+  
+         <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Rent Date:</label>
+    <div class="col-sm-8">
+         <div class='input-group date date-pick'>
+              {{formTrailer.rent_date|add_class:'form-control'|attr:'placeholder:Rent Date'|attr:'disabled'}}
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+    </div>
+  </div>
+  
+      <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Deliver Date:</label>
+    <div class="col-sm-8">
+         <div class='input-group date date-pick'>
+              {{formTrailer.deliver_date|add_class:'form-control'|attr:'placeholder:Deliver Date'|attr:'disabled'}}
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+    </div>
+  </div>
+  </div>
+  </div>
+</form>
+</div>
+ 
+<br>
+<br>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+ <script src="{% static 'hound/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'hound/js/events.js' %}"></script>
+</html>

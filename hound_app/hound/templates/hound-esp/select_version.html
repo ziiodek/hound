@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="{% static 'hound/images/favicon.ico' %}">
+ <link href="{% static 'hound/css/bootstrap.min.css' %}" rel="stylesheet">
+ <link rel="stylesheet" href="{% static 'hound/fonts/font-awesome/css/font-awesome.min.css' %}">
+ <link href="{% static 'hound/css/custom.css' %}" rel="stylesheet">
+
+</head>
+<body class="registration-background">
+<div class="jumbotron">
+  <div class="container-fluid ">
+    <ul class="nav navbar-nav" style="margin-left:1px; font-size:40px;">
+     <a href="#"><i class="fa fa-paw" aria-hidden="true"></i></a>
+    </ul>
+	<br>		  
+  </div>
+</div>
+<div class="center-verticaly-container">
+<div class="container center-verticaly">
+  <div class="row">
+	 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+<div style="max-width:350px; margin:0 auto;" class="main-forms-container center-horizontaly">
+<form class="form-horizontal">
+<center>
+<img src="{% static 'hound/images/hound-logo.png' %}" class="img-responsive img-logo" />
+</center>
+<br>
+    <div class="row">
+	 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+	 <center><a href="{% url 'email' %}">English</a> </center>
+	 </div>
+	 	 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+		  <center><a href="#">Spanish</a> </center>
+	 </div>
+	</div>
+</form>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+ <script src="{% static 'hound/js/bootstrap.min.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+{% load static %}
+{% load widget_tweaks %}
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="{% static 'hound/images/favicon.ico' %}">
+ <link href="{% static 'hound/css/bootstrap.min.css' %}" rel="stylesheet">
+ <link rel="stylesheet" href="{% static 'hound/fonts/font-awesome/css/font-awesome.min.css' %}">
+ <link href="{% static 'hound/css/custom.css' %}" rel="stylesheet">
+</head>
+<body>
+
+<div class="jumbotron">
+  <div class="container-fluid ">
+    <ul class="nav navbar-nav" style="margin-left:1px;">
+     <a href="/drivers/1/0/"><img src="{% static 'hound/images/hound-icon.png' %}" class="header-img" /></a>
+        <br><br>&nbsp;<a href="/edit_vehicle/0/{{economic_no}}/" style="font-size:12pt;">ING</a>
+    </ul>
+		  <ul class="nav navbar-nav navbar-right second-menu-icons" style="margin-left:2px;">
+		<a href="/logout/1/" style="font-size:14pt;">Cerrar Sesión</a>
+		<br><div class="navbar-right" style="margin-right:2px;"><a href="/settings/1/" ><i class="fa fa-cog" aria-hidden="true"></i></a></div>
+    </ul>
+	<br>
+  </div>
+</div>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <ul class="nav navbar-nav">
+      <li><a href="/trip_status/1/">Rastreo</a></li>
+      <li><a href="#">Monitoreo</a></li>
+      <li class="active"><a href="/drivers/1/0/">Assets</a></li>
+    </ul>
+  </div>
+</nav>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+
+      {% if active %}
+
+                <ul class="nav navbar-nav second-menu-icons">
+     <li class="active"><a href="/archiver_vehicles/1/1/"><i class="fa fa-car" aria-hidden="true"></i></a></li>
+	   <li ><a href="/archiver_trailers/1/1/"><i class="fa fa-truck" aria-hidden="true"></i></a></li>
+	   <li ><a href="/archiver_drivers/1/1/"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a></li>
+    </ul>
+
+      {% else %}
+                  <ul class="nav navbar-nav second-menu-icons">
+      <li class="active"><a href="/vehicles/1/0/"><i class="fa fa-car" aria-hidden="true"></i></a></li>
+	   <li><a href="/trailers/1/0/"><i class="fa fa-truck" aria-hidden="true"></i></a></li>
+	   <li><a href="/drivers/1/0/"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a></li>
+	    <li><a href="/archiver_drivers/1/1/"><i class="fa fa-folder-open" aria-hidden="true"></i></a></li>
+    </ul>
+      {% endif %}
+
+
+  </div>
+</nav>
+
+<div class="container">
+<br>
+<br>
+  <div class="center-horizontaly" style="max-width:600px;">
+
+  <div class="form-horizontal form-container">
+                   {% if messages%}
+     {% for message in messages %}
+    <div class="alert alert-danger">
+  <strong>Error!</strong>
+        {{ message }}
+</div>
+    {% endfor %}
+    {% endif %}
+  <h3>
+  Editar Perfil de Vehículo
+  </h3>
+  <br>
+<div class="row">
+  	 <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" style="font-size:30px;">
+         <center>
+         <label style="font-size:20px;">Imagen de Perfil</label>
+
+          <img class="img-responsive" src="{% static profile %}" style="width:150px; height:150px; border-radius:150px;">
+         <div class="form-inline icons-inverse text-left">
+         <form action="/profile_vehicle/1/{{economic_no}}/1/" method="post" id="profileForm" enctype="multipart/form-data">
+              {% csrf_token %}
+
+           <a href="#" onclick="select_file()"><i class="fa fa-camera" aria-hidden="true"></i></a>
+
+		<div style="display:none;">{{formProfile.profile|add_class:'form-control'|attr:'onchange:upload_file();'}}</div>
+	 <br>
+	 <br>
+
+         </form>
+         </div>
+             </center>
+	</div>
+<form action="/edit_vehicle/1/{{economic_no}}/" method="post" >
+       {% csrf_token %}
+ <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+   <div class="form-group two-column-form">
+    <label class="control-label col-sm-4" >No. Económico:</label>
+    <div class="col-sm-8">
+        {{formVehicle.economic_no|add_class:'form-control'|attr:'placeholder:No. Económico'}}
+
+    </div>
+  </div>
+    <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Vin:</label>
+    <div class="col-sm-8">
+         {{formVehicle.vin|add_class:'form-control'|attr:'placeholder:Vin'}}
+
+    </div>
+  </div>
+      <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">No. de Placas:</label>
+    <div class="col-sm-8">
+      {{formVehicle.plate_no|add_class:'form-control'|attr:'placeholder:No. de Placas'}}
+    </div>
+  </div>
+
+          <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">País:</label>
+    <div class="col-sm-3" style="padding-left:10px;">
+     {{formVehicle.country_select|add_class:'form-control'|attr:'placeholder:País'|attr:'onchange:display_states();'}}
+    </div>
+  </div>
+
+          <div style="display:none;" id="usa">
+    <div class="form-group two-column-form">
+    <label class="control-label col-sm-4" >Estado:</label>
+    <div class="col-sm-6" style="padding-left:10px;">
+        {{formVehicle.states_usa|add_class:'form-control'|attr:'placeholder:Estado'}}
+    </div>
+  </div>
+  </div>
+
+
+          <div style="display:none;" id="mx">
+    <div class="form-group two-column-form">
+    <label class="control-label col-sm-4" >Estado:</label>
+    <div class="col-sm-6" style="padding-left:10px;">
+        {{formVehicle.states_mx|add_class:'form-control'|attr:'placeholder:Estado'}}
+    </div>
+  </div>
+  </div>
+
+      <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Año:</label>
+    <div class="col-sm-3" style="padding-left:10px;">
+      {{formVehicle.year|add_class:'form-control'|attr:'placeholder:Año'}}
+    </div>
+  </div>
+
+
+      <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Modelo:</label>
+    <div class="col-sm-8">
+      {{formVehicle.model|add_class:'form-control'|attr:'placeholder:Modelo'}}
+    </div>
+  </div>
+      <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Marca:</label>
+    <div class="col-sm-8">
+      {{formVehicle.brand|add_class:'form-control'|attr:'placeholder:Marca'}}
+    </div>
+  </div>
+        <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Tipo de Vehículo:</label>
+    <div class="col-sm-8">
+       {{formVehicle.type|add_class:'form-control'|attr:'placeholder:Tipo de Vehículo'}}
+    </div>
+  </div>
+
+          <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Condición:</label>
+    <div class="col-sm-8">
+       {{formVehicle.status|add_class:'form-control'|attr:'placeholder:Condición'}}
+    </div>
+  </div>
+ <div class="form-inline two-column-form navbar-right">
+ <button type="submit" class="btn btn-primary">Guardar</button>
+
+     {% if active %}
+       <a href="/archiver_vehicles/1/1/"><button type="button" class="btn btn-primary">Cancelar</button></a>
+
+     {% else %}
+        <a href="/vehicles/1/0/"><button type="button" class="btn btn-primary">Cancelar</button></a>
+     {% endif %}
+ </div>
+  </div>
+  </div>
+</form>
+</div>
+
+<br>
+<br>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+ <script src="{% static 'hound/js/bootstrap.min.js' %}"></script>
+ <script src="{% static 'hound/js/events.js' %}"></script>
+<script src="{% static 'hound/js/upload_img_profile.js' %}"></script>
+<script src="{% static 'hound/js/select_state.js' %}"></script>
+</body>
+</html>

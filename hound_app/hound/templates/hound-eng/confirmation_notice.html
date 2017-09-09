@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+{% load widget_tweaks %}
+{% load static %}
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="{% static 'hound/images/favicon.ico' %}">
+ <link href="{% static 'hound/css/bootstrap.min.css' %}" rel="stylesheet">
+ <link rel="stylesheet" href="{% static 'hound/fonts/font-awesome/css/font-awesome.min.css' %}">
+ <link href="{% static 'hound/css/custom.css' %}" rel="stylesheet">
+
+</head>
+<body class="registration-background">
+<div class="center-verticaly-container">
+<div class="container center-verticaly">
+<div style="max-width:450px;" class="main-forms-container center-horizontaly">
+
+        {% if messages%}
+     {% for message in messages %}
+    <div class="alert alert-danger">
+  <strong>Error!</strong>
+        {{ message }}
+</div>
+    {% endfor %}
+    {% endif %}
+     {% csrf_token %}
+<center>
+<img src="{% static 'hound/images/hound-logo.png' %}" class="img-responsive img-logo" />
+
+<br>
+   <div class="form-group two-column-form">
+       It seems that you have not confirmed your email address<br>
+       <a href="/confirm_email/0/">Resend confirmation email</a><br>
+
+  </div>
+</center>
+</div>
+</div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+ <script src="{% static 'hound/js/bootstrap.min.js' %}"></script>
+ <script src="{% static 'hound/js/authenticator.js' %}"></script>
+</body>
+</html>

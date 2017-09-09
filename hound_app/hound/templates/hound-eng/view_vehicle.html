@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+{% load static %}
+{% load widget_tweaks %}
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="images/favicon.ico">
+    <link rel="icon" href="{% static 'hound/images/favicon.ico' %}">
+ <link href="{% static 'hound/css/bootstrap.min.css' %}" rel="stylesheet">
+ <link rel="stylesheet" href="{% static 'hound/fonts/font-awesome/css/font-awesome.min.css' %}">
+ <link href="{% static 'hound/css/custom.css' %}" rel="stylesheet">
+</head>
+<body>
+
+<div class="jumbotron">
+  <div class="container-fluid ">
+    <ul class="nav navbar-nav" style="margin-left:1px;">
+     <a href="/drivers/0/0/"><img src="{% static 'hound/images/hound-icon.png' %}" class="header-img" /></a>
+        <br><br>&nbsp;&nbsp;<a href="/view_vehicle/1/{{economic_no}}/" style="font-size:12pt;">ESP</a>
+    </ul>
+		  <ul class="nav navbar-nav navbar-right second-menu-icons" style="margin-left:2px;">
+		<a href="/logout/0/" style="font-size:14pt;">Log out</a>
+		<br><div class="navbar-right" style="margin-right:2px;"><a href="/settings/0/" ><i class="fa fa-cog" aria-hidden="true"></i></a></div>
+    </ul>
+	<br>		  
+  </div>
+</div>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <ul class="nav navbar-nav">
+      <li><a href="/trip_status/0/">Track</a></li>
+      <li><a href="#">Monitor</a></li>
+      <li class="active"><a href="/drivers/0/0/">Assets</a></li>
+    </ul>
+  </div>
+</nav>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+
+      {% if active %}
+
+                <ul class="nav navbar-nav second-menu-icons">
+     <li class="active"><a href="/archiver_vehicles/0/1/"><i class="fa fa-car" aria-hidden="true"></i></a></li>
+	   <li ><a href="/archiver_trailers/0/1/"><i class="fa fa-truck" aria-hidden="true"></i></a></li>
+	   <li ><a href="/archiver_drivers/0/1/"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a></li>
+    </ul>
+
+      {% else %}
+                  <ul class="nav navbar-nav second-menu-icons">
+      <li class="active"><a href="/vehicles/0/0/"><i class="fa fa-car" aria-hidden="true"></i></a></li>
+	   <li><a href="/trailers/0/0/"><i class="fa fa-truck" aria-hidden="true"></i></a></li>
+	   <li><a href="/drivers/0/0/"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a></li>
+	    <li><a href="/archiver_drivers/0/1/"><i class="fa fa-folder-open" aria-hidden="true"></i></a></li>
+    </ul>
+      {% endif %}
+
+  </div>
+</nav>
+
+<div class="container">
+<br>
+<br>
+  <div class="center-horizontaly" style="max-width:600px;">
+
+  <form class="form-horizontal form-container">
+  	   <div class="form-inline icons-inverse navbar-right" style="font-size:30px;">
+			<a href="/edit_vehicle/0/{{economic_no}}/"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+            {% if active %}
+           <a href="/restore_vehicle/0/{{economic_no}}/"><i class="fa fa-repeat" aria-hidden="true"></i></a>
+           {% endif %}
+			<a href="/delete_vehicle/0/{{economic_no}}/"><i class="fa fa-times" aria-hidden="true"></i></a>
+		</div>
+  <h3>
+  Vehicle Profile
+  </h3>
+  <br>
+<div class="row">
+  	 <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+         <center>
+          <label style="font-size:20px;">Profile Image</label>
+         <img class="img-responsive" src="{% static profile %}" style="width:150px; height:150px; border-radius:150px;"></center>
+	 <br>
+	 <br>
+	</div>
+	
+ <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+   <div class="form-group two-column-form">
+    <label class="control-label col-sm-4" >Economic No:</label>
+    <div class="col-sm-8">
+        {{formVehicle.economic_no|add_class:'form-control'|attr:'placeholder:Economic No.'|attr:'disabled'}}
+
+    </div>
+  </div>
+    <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Vin:</label>
+    <div class="col-sm-8">
+      {{formVehicle.vin|add_class:'form-control'|attr:'placeholder:Vin'|attr:'disabled'}}
+    </div>
+  </div>
+      <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Plate No:</label>
+    <div class="col-sm-8">
+      {{formVehicle.plate_no|add_class:'form-control'|attr:'placeholder:Plate No.'|attr:'disabled'}}
+    </div>
+  </div>
+
+          <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Country:</label>
+    <div class="col-sm-3" >
+     {{formVehicle.country|add_class:'form-control'|attr:'placeholder:Country'|attr:'onchange:display_states();'|attr:'disabled'}}
+    </div>
+  </div>
+
+      <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">State:</label>
+    <div class="col-sm-8">
+     {{formVehicle.state|add_class:'form-control'|attr:'placeholder:State'|attr:'disabled'}}
+    </div>
+  </div>
+      <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Year:</label>
+    <div class="col-sm-3" style="padding-left:10px;">
+      {{formVehicle.year|add_class:'form-control'|attr:'placeholder:Year'|attr:'disabled'}}
+    </div>
+  </div>
+      <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Model:</label>
+    <div class="col-sm-8">
+      {{formVehicle.model|add_class:'form-control'|attr:'placeholder:Model'|attr:'disabled'}}
+    </div>
+  </div>
+      <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Brand:</label>
+    <div class="col-sm-8">
+      {{formVehicle.brand|add_class:'form-control'|attr:'placeholder:Brand'|attr:'disabled'}}
+    </div>
+  </div>
+        <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Vehicle Type:</label>
+    <div class="col-sm-8">
+      {{formVehicle.type|add_class:'form-control'|attr:'placeholder:Vehicle Type'|attr:'disabled'}}
+    </div>
+  </div>
+
+             <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Status:</label>
+    <div class="col-sm-8">
+      {{formVehicle.status|add_class:'form-control'|attr:'placeholder:Status'|attr:'disabled'}}
+    </div>
+  </div>
+
+  </div>
+  </div>
+</form>
+</div>
+ 
+<br>
+<br>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+ <script src="{% static 'hound/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'hound/js/events.js' %}"></script>
+</body>
+</html>

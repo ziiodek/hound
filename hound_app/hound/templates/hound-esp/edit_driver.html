@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+{% load static %}
+{% load widget_tweaks %}
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="icon" href="{% static 'hound/images/favicon.ico' %}">
+ <link href="{% static 'hound/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'hound/css/bootstrap-datetimepicker.min.css' %}" rel="stylesheet">
+ <link rel="stylesheet" href="{% static 'hound/fonts/font-awesome/css/font-awesome.min.css' %}">
+ <link href="{% static 'hound/css/custom.css' %}" rel="stylesheet">
+
+</head>
+<body>
+
+<div class="jumbotron">
+  <div class="container-fluid ">
+    <ul class="nav navbar-nav" style="margin-left:1px;">
+     <a href="/drivers/1/0/"><img src="{% static 'hound/images/hound-icon.png' %}" class="header-img" /></a>
+          <br><br>&nbsp;<a href="/edit_driver/0/{{assigned_id}}/" style="font-size:12pt;">ENG</a>
+    </ul>
+		  <ul class="nav navbar-nav navbar-right second-menu-icons" style="margin-left:2px;">
+		<a href="/logout/1/" style="font-size:14pt;">Cerrar Sesión</a>
+		<br><div class="navbar-right" style="margin-right:2px;"><a href="/settings/1/" ><i class="fa fa-cog" aria-hidden="true"></i></a></div>
+    </ul>
+	<br>
+  </div>
+</div>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <ul class="nav navbar-nav">
+      <li><a href="/trip_status/1/">Rastreo</a></li>
+      <li><a href="#">Monitoreo</a></li>
+      <li class="active"><a href="/drivers/1/0/">Assets</a></li>
+    </ul>
+  </div>
+</nav>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+
+      {% if expired %}
+            <ul class="nav navbar-nav second-menu-icons">
+      <li><a href="/archiver_vehicles/1/1/"><i class="fa fa-car" aria-hidden="true"></i></a></li>
+	   <li><a href="/archiver_trailers/1/1/"><i class="fa fa-truck" aria-hidden="true"></i></a></li>
+	   <li class="active"><a href="/archiver_drivers/1/1/"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a></li>
+    </ul>
+
+      {% else %}
+          <ul class="nav navbar-nav second-menu-icons">
+      <li><a href="/vehicles/1/0/"><i class="fa fa-car" aria-hidden="true"></i></a></li>
+	   <li><a href="/trailers/1/0/"><i class="fa fa-truck" aria-hidden="true"></i></a></li>
+	   <li class="active"><a href="/drivers/1/0/"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a></li>
+	    <li><a href="/archiver_drivers/1/1/"><i class="fa fa-folder-open" aria-hidden="true"></i></a></li>
+    </ul>
+      {% endif %}
+
+
+  </div>
+</nav>
+
+<div class="container">
+<br>
+<br>
+  <div class="center-horizontaly" style="max-width:1100px;">
+  <div class="form-horizontal form-container">
+                          {% if messages%}
+     {% for message in messages %}
+    <div class="alert alert-danger">
+  <strong>Error!</strong>
+        {{ message }}
+</div>
+    {% endfor %}
+    {% endif %}
+  <h3>
+  Editar Perfil de Conductor
+  </h3>
+  		<div class="form-inline icons-inverse navbar-right" style="font-size:15px; margin-right:-10px;">
+			<a href="#rfc_curp" data-toggle="collapse" onclick="hide_element('id')" id="link">RFC/CURP</a>
+		</div>
+  <br>
+  <br>
+
+<div class="row">
+  	 <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2" style="font-size:30px;">
+          <center>
+         <label style="font-size:20px;">Imagen de Perfil</label>
+
+
+	 <img class="img-responsive form-img" src="{% static profile %}" style="width:150px; height:150px; border-radius:150px;">
+
+	   <div class="form-inline icons-inverse text-left">
+	    <form action="/profile_driver/1/{{assigned_id}}/1/" method="post" id="profileForm" enctype="multipart/form-data">
+            {% csrf_token %}
+
+	       <a href="#" onclick="select_file()"><i class="fa fa-camera" aria-hidden="true"></i></a>
+
+		<div style="display:none;">{{formProfile.profile|add_class:'form-control'|attr:'onchange:upload_file();'}}</div>
+          </form>
+		</div>
+          </center>
+	 <br>
+          <label style="font-size:20px;">Huellas Digitales</label>
+         <center>
+	  <img class="img-responsive form-img" src="{% static prints %}" style="width:150px; height:150px; border-radius:150px;">
+	    <div class="form-inline icons-inverse text-left" style="font-size:30px;">
+		 <form action="/prints_driver/1/{{assigned_id}}/1/" method="post" id="printsForm" enctype="multipart/form-data">
+              {% csrf_token %}
+	        <a href="#" onclick="select_file_prints()"><i class="fa fa-camera" aria-hidden="true"></i></a>
+		<div style="display:none;">{{formPrints.prints|add_class:'form-control'|attr:'onchange:upload_file_prints();'}}</div>
+          </form>
+		</div>
+		</center>
+	  <br>
+	  <br>
+	</div>
+     <form action="/edit_driver/1/{{assigned_id}}/" method="post">
+    {% csrf_token %}
+ <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+    <div class="form-group two-column-form">
+    <label class="control-label col-sm-5" >Id Asignado:</label>
+    <div class="col-sm-7">
+        {{formDriver.assigned_id|add_class:'form-control'|attr:'placeholder:Id Asignado'|attr:'disabled'}}
+    </div>
+  </div>
+   <div class="form-group two-column-form" id="id">
+    <label class="control-label col-sm-5" >Id:</label>
+    <div class="col-sm-7">
+        {% render_field formDocuments.id type="text" class="form-control" placeholder="Id" id="id"%}
+    </div>
+  </div>
+      <div class="collapse" id="rfc_curp">
+    <div class="form-group two-column-form">
+    <label class="control-label col-sm-5" >RFC:</label>
+    <div class="col-sm-7">
+        {{formDocuments.rfc|add_class:'form-control'|attr:'placeholder:RFC'}}
+    </div>
+  </div>
+      <div class="form-group two-column-form">
+    <label class="control-label col-sm-5" >CURP:</label>
+    <div class="col-sm-7">
+     {{formDocuments.curp|add_class:'form-control'|attr:'placeholder:CURP'}}
+    </div>
+  </div>
+  </div>
+    <div class="form-group two-column-form">
+    <label class="control-label col-sm-5">*Nombre:</label>
+    <div class="col-sm-7">
+     {{formDriver.name|add_class:'form-control'|attr:"placeholder:Nombre"|attr:'required'}}
+    </div>
+  </div>
+      <div class="form-group two-column-form">
+    <label class="control-label col-sm-5">*Apellido:</label>
+    <div class="col-sm-7">
+         {{formDriver.last_name|add_class:'form-control'|attr:"placeholder:Apellido"|attr:'required'}}
+    </div>
+  </div>
+             <div class="form-group two-column-form">
+    <label class="control-label col-sm-5">Segundo Nombre:</label>
+    <div class="col-sm-7">
+        {{formDriver.middle_name|add_class:'form-control'|attr:'placeholder:Segundo Nombre'}}
+    </div>
+  </div>
+       <div class="form-group two-column-form">
+    <label class="control-label col-sm-5">Fecha de Nacimiento:</label>
+    <div class="col-sm-7">
+	 <div class='input-group date date-pick datepicker' data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                     {% render_field formDriver.date_of_birth class="form-control" placeholder="Fecha de Nacimiento" %}
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+    </div>
+  </div>
+
+
+             <div class="form-group two-column-form">
+   <label class="control-label col-sm-5">Correo Electrónico:</label>
+    <div class="col-sm-7">
+        {{formDriver.email_address|add_class:'form-control'|attr:'placeholder:Correo Electrónico'}}
+    </div>
+  </div>
+
+
+              <div class="form-group two-column-form">
+    <label class="control-label col-sm-5" style="border-bottom:solid 1px; border-color:gray;">Lugar de Nacimiento</label>
+    <div class="col-sm-7">
+
+    </div>
+  </div>
+
+              <div class="form-group two-column-form">
+    <label class="control-label col-sm-5">País</label>
+    <div class="col-sm-7">
+        {{formDriver.country|add_class:'form-control'|attr:'placeholder:País'}}
+    </div>
+  </div>
+
+              <div class="form-group two-column-form">
+    <label class="control-label col-sm-5">Estado</label>
+    <div class="col-sm-7">
+        {{formDriver.state|add_class:'form-control'|attr:'placeholder:Estado'}}
+    </div>
+  </div>
+
+              <div class="form-group two-column-form">
+    <label class="control-label col-sm-5">Ciudad</label>
+    <div class="col-sm-7">
+        {{formDriver.city|add_class:'form-control'|attr:'placeholder:Ciudad'}}
+    </div>
+  </div>
+
+                  <div class="form-group two-column-form">
+    <label class="control-label col-sm-5" style="border-bottom:solid 1px; border-color:gray;">Dirección</label>
+    <div class="col-sm-7">
+
+    </div>
+  </div>
+
+              <div class="form-group two-column-form">
+    <label class="control-label col-sm-5">País:</label>
+    <div class="col-sm-7" >
+        {{formAddress.country_addr|add_class:'form-control'|attr:'placeholder:País'}}
+    </div>
+  </div>
+
+
+              <div class="form-group two-column-form">
+    <label class="control-label col-sm-5">Estado:</label>
+    <div class="col-sm-7">
+        {{formAddress.state_addr|add_class:'form-control'|attr:'placeholder:Estado'}}
+</div>
+
+</div>
+
+  </div>
+   <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+
+                       <div class="form-group two-column-form">
+    <label class="control-label col-sm-5">Ciudad:</label>
+    <div class="col-sm-7">
+        {{formAddress.city_addr|add_class:'form-control'|attr:'placeholder:Ciudad'}}
+    </div>
+  </div>
+
+
+          <div class="form-group two-column-form">
+    <label class="control-label col-sm-5">Calle:</label>
+    <div class="col-sm-7">
+        {{formAddress.street|add_class:'form-control'|attr:'placeholder:Calle'}}
+    </div>
+  </div>
+
+          <div class="form-group two-column-form">
+    <label class="control-label col-sm-5">Código Postal:</label>
+    <div class="col-sm-7">
+
+          {{formAddress.zip_code|add_class:'form-control'|attr:'placeholder:Código postal'}}
+
+
+    </div>
+  </div>
+
+                <div class="form-group two-column-form">
+    <label class="control-label col-sm-5">Ext:</label>
+    <div class="col-sm-7">
+       {{formAddress.ext|add_class:'form-control'|attr:'placeholder:Ext'}}
+
+    </div>
+  </div>
+
+           <div class="form-group two-column-form">
+    <label class="control-label col-sm-5">Principal Número de Teléfono:</label>
+    <div class="col-sm-7">
+        {{formAddress.phone_number|add_class:'form-control'|attr:'placeholder:Número de Teléfono'}}
+
+    </div>
+  </div>
+                            <div class="form-inline two-column-form text-right">
+           <a href="/add_directory/1/{{assigned_id}}/"><button type="button" class="btn btn-default">Directorio</button></a>
+ </div>
+
+                      <div class="form-group two-column-form">
+    <label class="control-label col-sm-5" style="border-bottom:solid 1px; border-color:gray;" >Documentos</label>
+    <div class="col-sm-7">
+
+    </div>
+  </div>
+
+   <div class="form-group two-column-form">
+    <label class="control-label col-sm-5">No. de Licencia:</label>
+    <div class="col-sm-7">
+        {{formDocuments.license_no|add_class:'form-control'|attr:'placeholder:No. de Licencia'}}
+    </div>
+  </div>
+      <div class="form-group two-column-form">
+    <label class="control-label col-sm-5">Tipo de Licencia:</label>
+    <div class="col-sm-7">
+        {{formDocuments.license_type|add_class:'form-control'|attr:'placeholder:Tipo de Licencia'}}
+    </div>
+  </div>
+
+         <div class="form-group two-column-form">
+    <label class="control-label col-sm-5">Vigente desde:</label>
+    <div class="col-sm-7">
+         <div class='input-group date date-pick datepicker' data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                    {% render_field formDocuments.license_issue_date class="form-control" placeholder="Vegente desde" %}
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+    </div>
+  </div>
+
+      <div class="form-group two-column-form">
+    <label class="control-label col-sm-5">Vigente hasta:</label>
+    <div class="col-sm-7">
+         <div class='input-group date date-pick datepicker' data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                    {% render_field formDocuments.license_exp_date class="form-control" placeholder="Vigente hasta"%}
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+    </div>
+  </div>
+     <div class="form-group two-column-form">
+    <label class="control-label col-sm-5">No. de Pasaporte:</label>
+    <div class="col-sm-7">
+        {{formDocuments.passport_no|add_class:'form-control'|attr:'placeholder:No. de Pasaporte'}}
+    </div>
+  </div>
+         <div class="form-group two-column-form">
+    <label class="control-label col-sm-5">Vigente desde:</label>
+    <div class="col-sm-7">
+         <div class='input-group date date-pick datepicker' data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                    {% render_field formDocuments.passport_issue_date class="form-control" placeholder="Vigente desde"%}
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+    </div>
+  </div>
+
+      <div class="form-group two-column-form">
+    <label class="control-label col-sm-5">Vigente hasta:</label>
+    <div class="col-sm-7">
+         <div class='input-group date date-pick datepicker' data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                    {% render_field formDocuments.passport_exp_date class="form-control" placeholder="Vigente hasta"%}
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+    </div>
+  </div>
+
+      <div class="form-group two-column-form">
+    <label class="control-label col-sm-5">Fecha de Inicio:</label>
+    <div class="col-sm-7">
+
+                <div class='input-group date date-pick datepicker' data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                    {%render_field formStatus.start_date class="form-control" placeholder="Fecha de Inicio"%}
+
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+
+    </div>
+  </div>
+     {% if expired %}
+          <div class="form-group two-column-form">
+    <label class="control-label col-sm-5">Fecha de Expiración:</label>
+    <div class="col-sm-7">
+
+                <div class='input-group date date-pick datepicker' data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                    {%render_field formStatus.end_date class="form-control" placeholder="Fecha de Expiración"%}
+
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+
+    </div>
+  </div>
+       {% endif %}
+   <div class="form-group" style="padding-left:45px;">
+				 <div class="checkbox">
+				<label>
+                    {{formDocuments.dot}}<strong>Dot</strong>
+                </label>
+			</div>
+  </div>
+         <div class="form-group" style="padding-left:45px;">
+				 <div class="checkbox">
+				<label>
+                   {{formDocuments.criminal_record}}<strong>Expediente Criminal</strong>
+                </label>
+			</div>
+  </div>
+
+            {% if expired %}
+           <div class="form-group two-column-form">
+    <label class="control-label col-sm-5">Porque Expiro:</label>
+    <div class="col-sm-7">
+     {{formStatus.leave_reason|add_class:'form-control'|attr:'placeholder:Porque Expiro'}}
+    </div>
+  </div>
+       {% endif %}
+
+       <div class="form-inline two-column-form text-right">
+           <a href="/vacations/1/{{assigned_id}}/"><button type="button" class="btn btn-default">Vacaciones</button></a>
+ </div>
+ <br>
+    <div class="form-inline two-column-form navbar-right">
+ <button type="submit" class="btn btn-primary">Guardar</button>
+        {% if expired %}
+        <a href="/archiver_drivers/1/1/"><button type="button" class="btn btn-primary">Cancelar</button></a>
+        {% else %}
+         <a href="/drivers/1/0/"><button type="button" class="btn btn-primary">Cancelar</button></a>
+        {% endif %}
+ </div>
+  </div>
+  </form>
+  </div>
+  </div>
+</div>
+</div>
+
+<br>
+<br>
+</div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+ <script src="{% static 'hound/js/bootstrap.min.js' %}"></script>
+ <script src="{% static 'hound/js/bootstrap-datetimepicker.js' %}"></script>
+ <script src="{% static 'hound/locales/bootstrap-datetimepicker.fr.js' %}"></script>
+ <script src="{% static 'hound/js/events.js' %}"></script>
+ <script src="{% static 'hound/js/upload_img_profile.js' %}"></script>
+<script src="{% static 'hound/js/upload_img_prints.js' %}"></script>
+ <script src="{% static 'hound/js/datepicker.js' %}"></script>
+</body>
+</html>

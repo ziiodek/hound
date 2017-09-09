@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+{% load static %}
+{% load widget_tweaks %}
+{% load django_tables2 %}
+{% load i18n %}
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'hound/images/favicon.ico' %}">
+ <link href="{% static 'hound/css/bootstrap.min.css' %}" rel="stylesheet">
+ <link rel="stylesheet" href="{% static 'hound/fonts/font-awesome/css/font-awesome.min.css' %}">
+ <link href="{% static 'hound/css/custom.css' %}" rel="stylesheet">
+
+</head>
+<body>
+
+<div class="jumbotron">
+  <div class="container-fluid ">
+    <ul class="nav navbar-nav" style="margin-left:1px;">
+     <a href="/drivers/0/0/"><img src="{% static 'hound/images/hound-icon.png' %}" class="header-img" /></a>
+          <br><br>&nbsp;&nbsp;<a href="/trip_status/1/" style="font-size:12pt;">ESP</a>
+    </ul>
+		  <ul class="nav navbar-nav navbar-right second-menu-icons" style="margin-left:2px;">
+		<a href="/logout/0/" style="font-size:14pt;">Log out</a>
+		<br><div class="navbar-right" style="margin-right:2px;"><a href="/settings/0/" ><i class="fa fa-cog" aria-hidden="true"></i></a></div>
+    </ul>
+	<br>		  
+  </div>
+</div>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="/trip_status/0/">Track</a></li>
+      <li><a href="#">Monitor</a></li>
+      <li><a href="/drivers/0/0/">Assets</a></li>
+    </ul>
+  </div>
+</nav>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <ul class="nav navbar-nav second-menu-icons">
+      <li><a href="#"><i class="fa fa-wrench" aria-hidden="true"></i></a></li>
+      <li class="active"><a href="/trip_status/0/"><i class="fa fa-road" aria-hidden="true"></i></a></li>
+      <li><a href="/bitacora/0/"><i class="fa fa-file-text-o" aria-hidden="true"></i></a></li>
+    </ul>
+	  <ul class="nav navbar-nav navbar-right second-menu-icons" style="margin-right:2px; margin-left:2px;">
+      <a href="#search_bar" data-toggle="collapse"><i class="fa fa-search" aria-hidden="true"></i></a>
+
+    </ul>
+  </div>
+</nav>
+<div class="search-bar text-right collapse" id="search_bar">
+<form action="/search_today_trip/0/" method="post">
+     {% csrf_token %}
+<div class="row" style="padding-right:15px;">
+<div class="col-sm-3">
+</div>
+<div class="col-sm-3">
+<div class="form-inline">
+  <div class="form-group">
+    <label>Vehicle Economic No:</label>
+      {{formSearchTrip.vehicle_no|add_class:'form-control'|attr:'placeholder:Vehicle Economic No.'}}
+
+  </div>
+</div>
+</div>
+<div class="col-sm-3">
+<div class="form-inline">
+   <div class="form-group">
+     <label>Trailer Economic No:</label>
+      {{formSearchTrip.trailer_no|add_class:'form-control'|attr:'placeholder:Trailer Economic No.'}}
+
+  </div>
+</div>
+</div>
+<div class="col-sm-3">
+<div class="form-inline">
+  <div class="form-group">
+    <label>Assigned Id:</label>
+    {{formSearchTrip.assigned_id|add_class:'form-control'|attr:'placeholder:Assigned Id.'}}
+
+  </div>
+</div>
+</div>
+</div>
+<div class="row" style="padding-right:15px;">
+    <div class="col-sm-3">
+</div>
+<div class="col-sm-3">
+<div class="form-inline">
+  <div class="form-group">
+    <label>Origin:</label>
+    {{formSearchTrip.origin|add_class:'form-control'|attr:'placeholder:Origin'}}
+
+  </div>
+</div>
+</div>
+<div class="col-sm-3">
+    <div class="form-inline">
+  <div class="form-group">
+    <label>Destiny:</label>
+    {{formSearchTrip.destiny|add_class:'form-control'|attr:'placeholder:Destiny'}}
+
+  </div>
+</div>
+</div>
+<div class="col-sm-3">
+<div class="form-inline">
+  <div class="form-group">
+    <label>Trip Type:</label>
+    {{formSearchTrip.trip_type|add_class:'form-control'|attr:'placeholder:Trip Type'}}
+
+  </div>
+</div>
+</div>
+
+</div>
+   <button type="submit" class="btn btn-default">Search</button>
+</form>
+</div>
+<div class="container">
+<br>
+<br>
+  <div class="form-inline icons" style="font-size:30px;">
+  <ul class="pagination navbar-right">
+  <form action="/manager_trip_status/0/" method="post" >
+       {% csrf_token %}
+       <input type="hidden" value="{{action}}" id="action" name="action">
+  <a href="#"><i class="fa fa-video-camera" aria-hidden="true"></i></a>
+  	<a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i></a>
+      {% if status %}
+      <a href="/cancel_trip/0/{{trip_id}}/"><i class="fa fa-ban" aria-hidden="true"></i></a>
+      <a href="/edit_trip/0/{{trip_id}}/{{driver.assigned_id}}/{{vehicle.economic_no}}/"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+      {% endif %}
+        <a href="#" onclick="remove()"><button type="submit" class="fa fa-times custom_input" aria-hidden="true"></button></a>
+</ul>
+   <ul class="pagination">
+       <a href="/assign_trip/0/0/0/" ><button type="button" style="background-color:#00ccff;" class="btn btn-info" >Assign Trip</button></a>
+       {% if status %}
+         <a href="/trip_status/0/" ><button type="button" style="background-color:#00ccff;" class="btn btn-info" >All</button></a>
+       {% endif %}
+  </ul>
+</div>
+<div class="table-responsive">          
+    {% block table %}
+  <table {% if table.attrs %} {{table.attrs.ad_html}}{% endif %} class="table custom-table">
+      {% block table.thead %}
+      {% if table.show_header %}
+  <thead>
+  <tr>
+      {% for column in table.columns%}
+      {% if column.orderable %}
+         <th {{ column.attrs.th.as_html }}><a style="color:#fff;" href="{% querystring table.prefixed_order_by_field=column.order_by_alias.next %}">{{ column.header }}</a></th>
+        {% else %}
+       <th {{ column.attrs.th.as_html }}>{{ column.header }}</th>
+      {% endif %}
+      {% endfor %}
+
+  </tr>
+  </thead>
+      {% endif %}
+      {% endblock table.thead %}
+
+  {% block table.tbody %}
+  <tbody>
+   {% for row in table.page.object_list|default:table.rows %} {# support pagination #}
+        {% block table.tbody.row %}
+        <tr {{ row.attrs.as_html }}>
+            {% for column, cell in row.items %}
+                <td {{ column.attrs.td.as_html }}>{% if column.localize == None %}{{ cell }}{% else %}{% if column.localize %}{{ cell|localize }}{% else %}{{ cell|unlocalize }}{% endif %}{% endif %}</td>
+            {% endfor %}
+        </tr>
+        {% endblock table.tbody.row %}
+        {% empty %}
+        {% if table.empty_text %}
+        {% block table.tbody.empty_text %}
+        <tr><td colspan="{{ table.columns|length }}">{{ table.empty_text }}</td></tr>
+        {% endblock table.tbody.empty_text %}
+        {% endif %}
+        {% endfor %}
+  </tbody>
+      {% endblock table.tbody %}
+       {% block table.tfoot %}
+    {% if table.has_footer %}
+    <tfoot>
+        <tr>
+        {% for column in table.columns %}
+            <td>{{ column.footer }}</td>
+        {% endfor %}
+        </tr>
+    </tfoot>
+    {% endif %}
+    {% endblock table.tfoot %}
+  </table>
+    {% endblock table %}
+    {% if table.page %}
+{% with table.page.paginator.count as total %}
+{% with table.page.object_list|length as count %}
+{% block pagination %}
+  <ul class="pagination navbar-right">
+      {% if table.page.has_previous %}
+        {% block pagination.previous %}
+  <li>
+     <a href="{% querystring table.prefixed_page_field=table.page.previous_page_number %}">{% trans "Prev" %}</a>
+  </li>
+      {% endblock pagination.previous %}
+    {% endif %}
+
+       {% if table.page.has_previous or table.page.has_next %}
+        {% block pagination.cardinality %}
+  <li><a href="#"> {% blocktrans with table.page.number as current and table.paginator.num_pages as total %}Page {{ current }} of {{ total }}{% endblocktrans %}</a></li>
+      {% endblock pagination.cardinality %}
+    {% endif %}
+ {% if table.page.has_next %}
+        {% block pagination.next %}
+  <li><a href="{% querystring table.prefixed_page_field=table.page.next_page_number %}">{% trans "Next" %}</a></li>
+       {% endblock pagination.next %}
+    {% endif %}
+</ul>
+    {% endblock pagination %}
+{% endwith %}
+{% endwith %}
+{% endif %}
+  </div>
+  </form>
+  <br>
+  <br>
+     {% if status %}
+  <div class="row">
+
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+
+  <div class="symetric-container" style="max-width:550px;">
+  <form class="form-horizontal form-container">
+      <h3>Driver Profile</h3>
+    <div class="form-inline icons-inverse navbar-right" style="font-size:30px;">
+			<a href="/view_driver/0/{{driver.assigned_id}}/"><i class="fa fa-eye" aria-hidden="true"></i></a>
+		</div>
+		<br>
+		<br>
+<div class="row">
+  	 <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+	 <center><img class="img-responsive" src="{% static driver.profile_img %}" style="width:150px; height:150px; border-radius:150px;"></center>
+	 
+	 <br>
+	 <br>
+	</div>
+	{% if driver %}
+ <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+   <div class="form-group two-column-form">
+    <label class="control-label col-sm-4" >Assign Id:</label>
+    <div class="col-sm-8">
+
+      <input type="text" class="form-control" id="driver_id" placeholder="Driver Id." value="{{driver.assigned_id}}" disabled>
+    </div>
+  </div>
+    <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Name:</label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control" id="name" placeholder="Name" value="{{driver.name}}" disabled>
+    </div>
+  </div>
+      <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Last Name:</label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control" id="last_name" placeholder="Last Name" value="{{driver.last_name}}" disabled>
+    </div>
+  </div>
+     <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Phone Number:</label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control" id="phone_number" placeholder="Phone Number" value="{{phone}}" disabled>
+    </div>
+  </div>
+  </div>
+  </div>
+</form>
+
+  </div>
+  <br>
+  <br>
+  </div>
+{% endif %}
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+    <div class="symetric-container" style="max-width:550px;">
+   <form class="form-horizontal form-container">
+       <h3>
+           Vehicle Profile
+       </h3>
+           <div class="form-inline icons-inverse navbar-right" style="font-size:30px;">
+			<a href="/view_vehicle/0/{{vehicle.economic_no}}/"><i class="fa fa-eye" aria-hidden="true"></i></a>
+		</div>
+       <br>
+       <br>
+<div class="row">
+  	 <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+	 <center><img class="img-responsive" src="{% static vehicle.profile_img %}" style="width:150px; height:150px; border-radius:150px;"> </center>
+	 <br>
+	 <br>
+	</div>
+	{% if vehicle %}
+ <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+   <div class="form-group two-column-form">
+    <label class="control-label col-sm-4" >Economic No:</label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control" id="economic_no" value="{{vehicle.economic_no}}" placeholder="Economic No." disabled>
+    </div>
+  </div>
+    <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Vin:</label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control" id="vin" placeholder="Vin" value="{{vehicle.vin}}" disabled>
+    </div>
+  </div>
+      <div class="form-group two-column-form">
+    <label class="control-label col-sm-4" >Plate No:</label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control" id="plate_no" placeholder="Plate No." value="{{vehicle.plate_no}}" disabled>
+    </div>
+  </div>
+      <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">State:</label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control" id="state" placeholder="State" value="{{vehicle.state}}" disabled>
+    </div>
+  </div>
+        <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Year:</label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control" id="year" placeholder="Year" value="{{vehicle.year}}" disabled>
+    </div>
+  </div>
+        <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Model:</label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control" id="model" placeholder="Model" value="{{vehicle.model}}" disabled>
+    </div>
+  </div>
+          <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Brand:</label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control" id="brand" placeholder="Brand" value="{{vehicle.brand}}" disabled>
+    </div>
+  </div>
+          <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Vehicle Type:</label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control" id="vehicle_type" placeholder="Vehicle Type" value="{{vehicle.type}}" disabled>
+    </div>
+  </div>
+  </div>
+  </div>
+</form>
+</div>
+  </div>
+      {% endif %}
+</div>
+
+<br>
+<br>
+{% if trailer %}
+  <div class="center-horizontaly" style="max-width:550px;">
+
+  <form class="form-horizontal form-container">
+  	   <div class="form-inline icons-inverse navbar-right" style="font-size:30px;">
+			<a href="/view_trailer/0/{{trailer.economic_no}}/"><i class="fa fa-eye" aria-hidden="true"></i></a>
+		</div>
+  <h3>
+  Trailer Profile
+  </h3>
+  <br>
+<div class="row">
+  	 <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+         <center><img class="img-responsive" src="{% static trailer.profile_img %}" style="width:150px; height:150px; border-radius:150px;" ></center>
+	 <br>
+	 <br>
+	</div>
+	
+ <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+   <div class="form-group two-column-form">
+    <label class="control-label col-sm-4" >Economic No:</label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control" id="economic_no" value="{{trailer.economic_no}}" placeholder="Economic No." disabled>
+    </div>
+  </div>
+      <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Plate No:</label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control" id="plate_no" placeholder="Plate No" value="trailer.plate_no" disabled>
+    </div>
+  </div>
+      <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">State:</label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control" id="sate" placeholder="State" value="{{trailer.state}}" disabled>
+    </div>
+  </div>
+      <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Year:</label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control" id="year" placeholder="Year" value="{{trailer.year}}" disabled>
+    </div>
+  </div>
+        <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Type:</label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control" id="trailer_type" value="{{trailer.type}}" placeholder="Type" disabled>
+    </div>
+  </div>
+          <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Capacity:</label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control" id="capacity" value="{{trailer.capacity}}" placeholder="Capacity" disabled>
+    </div>
+  </div>
+  </div>
+  </div>
+</form>
+</div>
+    {% endif %}
+    {% endif %}
+<br>
+<br>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+ <script src="{% static 'hound/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'hound/js/delete.js' %}"></script>
+<script src="{% static 'hound/js/toggle.js' %}"></script>
+</body>
+</html>

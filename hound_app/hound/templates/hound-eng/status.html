@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+{% load static %}
+{% load django_tables2 %}
+{% load i18n %}
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="{% static 'hound/images/favicon.ico' %}">
+ <link href="{% static 'hound/css/bootstrap.min.css' %}" rel="stylesheet">
+ <link rel="stylesheet" href="{% static 'hound/fonts/font-awesome/css/font-awesome.min.css' %}">
+ <link href="{% static 'hound/css/custom.css' %}" rel="stylesheet">
+
+</head>
+<body>
+
+<div class="jumbotron">
+  <div class="container-fluid ">
+    <ul class="nav navbar-nav" style="margin-left:1px;">
+     <a href="#"><img src="{% static 'hound/images/hound-icon.png' %}" class="header-img" /></a>
+    </ul>
+		  <ul class="nav navbar-nav navbar-right second-menu-icons" style="margin-left:2px;">
+		<a href="#" style="font-size:14pt;">Log out</a>
+		<br><div class="navbar-right" style="margin-right:2px;"><a href="#" ><i class="fa fa-cog" aria-hidden="true"></i></a></div>
+    </ul>
+	<br>		  
+  </div>
+</div>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="#">Track</a></li>
+      <li><a href="#">Monitor</a></li>
+      <li><a href="#">Assets</a></li>
+    </ul>
+  </div>
+</nav>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <ul class="nav navbar-nav second-menu-icons">
+      <li class="active"><a href="#"><i class="fa fa-wrench" aria-hidden="true"></i></a></li>
+      <li><a href="#"><i class="fa fa-road" aria-hidden="true"></i></a></li>
+      <li><a href="#"><i class="fa fa-file-text-o" aria-hidden="true"></i></a></li>
+    </ul>
+	  <ul class="nav navbar-nav navbar-right second-menu-icons" style="margin-right:2px; margin-left:2px;">
+      <a href="#search_bar" data-toggle="collapse"><i class="fa fa-search" aria-hidden="true"></i></a>
+
+    </ul>
+  </div>
+</nav>
+<div class="search-bar text-right collapse" id="search_bar">
+<form>
+<div class="form-inline">
+  <div class="form-group form-group">
+    <label>Economic No:</label>
+    <input type="text" class="form-control" id="search" placeholder="Economic No.">
+  </div>
+  
+  </div>
+   <button type="submit" class="btn btn-default">Search</button>
+</form>
+</div>
+	 <br>
+	 <br>
+<div class="container">
+<div class="row">
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+  <div class="icons text-right" style="font-size:30px;">
+	<a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i></a>
+	</div>
+  <div class="symetric-container " style="max-width:700px;">
+<div class="table-responsive">          
+  <table class="table custom-table ">
+  <thead>
+  <tr>
+  <th>
+Economic No.
+  </th>
+   <th>
+  Vehicle Type
+  </th>
+   <th>
+  Fuel
+  </th>
+   <th>
+   Oil
+  </th>
+     <th>
+   Water
+  </th>
+     <th>
+   Miliage
+  </th>
+  </tr>
+  </thead>
+  <tbody>
+  </tbody>
+  </table>
+  <div class="form-inline">
+  <ul class="pagination navbar-right">
+  <li><a href="#">Prev</a></li>
+  <li><a href="#">2</a></li>
+  <li><a href="#">3</a></li>
+  <li><a href="#">4</a></li>
+  <li><a href="#">5</a></li>
+  <li><a href="#">Next</a></li>
+</ul>
+   <ul class="pagination">
+  <button type="button" class="btn btn-info">Active</button>
+  <button type="button" class="btn btn-info">Unactive</button>
+  </ul>
+</div>
+  </div>
+
+  </div>
+  </div>
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+    <div class="symetric-container" style="max-width:450px;">
+
+  <form class="form-horizontal form-container">
+<div class="row">
+  	 <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+	 <img class="img-responsive" src="images/default.jpg">
+	 <br>
+	 <br>
+	</div>
+	
+ <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+   <div class="form-group two-column-form">
+    <label class="control-label col-sm-3" >Economic No:</label>
+    <div class="col-sm-9">
+      <input type="text" class="form-control" id="economic_no" placeholder="Economic No." disabled>
+    </div>
+  </div>
+    <div class="form-group two-column-form">
+    <label class="control-label col-sm-3">Vin:</label>
+    <div class="col-sm-9">
+      <input type="text" class="form-control" id="vin" placeholder="Vin" disabled>
+    </div>
+  </div>
+      <div class="form-group two-column-form">
+    <label class="control-label col-sm-3" >Plate No:</label>
+    <div class="col-sm-9">
+      <input type="text" class="form-control" id="plate_no" placeholder="Plate No." disabled>
+    </div>
+  </div>
+      <div class="form-group two-column-form">
+    <label class="control-label col-sm-3">State:</label>
+    <div class="col-sm-9">
+      <input type="text" class="form-control" id="state" placeholder="State" disabled>
+    </div>
+  </div>
+        <div class="form-group two-column-form">
+    <label class="control-label col-sm-3">Year:</label>
+    <div class="col-sm-9">
+      <input type="text" class="form-control" id="year" placeholder="Year" disabled>
+    </div>
+  </div>
+        <div class="form-group two-column-form">
+    <label class="control-label col-sm-3">Model:</label>
+    <div class="col-sm-9">
+      <input type="text" class="form-control" id="model" placeholder="State" disabled>
+    </div>
+  </div>
+          <div class="form-group two-column-form">
+    <label class="control-label col-sm-3">Brand:</label>
+    <div class="col-sm-9">
+      <input type="text" class="form-control" id="brand" placeholder="Brand" disabled>
+    </div>
+  </div>
+          <div class="form-group two-column-form">
+    <label class="control-label col-sm-3">Vehicle Type:</label>
+    <div class="col-sm-9">
+      <input type="text" class="form-control" id="vehicle_type" placeholder="Vehicle Type" disabled>
+    </div>
+  </div>
+  </div>
+  </div>
+</form>
+</div>
+  </div>
+</div>
+</div>
+	 <br>
+	 <br>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+ <script src="{% static 'hound/js/bootstrap.min.js' %}"></script>
+</body>
+</html>

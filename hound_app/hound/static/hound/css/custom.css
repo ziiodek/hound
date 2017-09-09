@@ -1,0 +1,210 @@
+body{
+background-color:#e5e5e5;	
+}
+
+.registration-background{
+background-color:#000;
+}
+
+.camera a{
+color:#333;	
+	
+}
+
+.camera a:hover{
+text-decoration:underline;	
+	
+}
+
+.center-input{
+text-align:center;
+}
+
+.img-logo{
+width:100px;	
+}
+
+.form-img{
+	width:100%;
+}
+.header-img{
+width:50px;	
+}
+
+.header-active{
+color:#fff;
+}
+.second-menu-icons{
+font-size:30px;	
+}
+
+.second-menu-icons a:hover{
+color:#fff;
+}
+
+
+.search-bar{
+color:#9d9d9d;
+background-color:#222;	
+border-bottom:solid 2px;
+border-bottom-color:#898989;
+padding-top:20px;
+padding-bottom:20px;
+padding-left:20px;
+padding-right:20px;
+
+}
+
+
+
+.form-container{
+min-width:100px; 
+border-radius:10px;
+background-color:#222;
+padding:20px 30px 20px 30px;
+color:#9d9d9d;
+width:inherit;
+border:1px solid;
+border-color:#898989;
+}
+
+.form-container label{
+padding-right:10px;
+}
+
+.two-column-form{
+padding-left:25px;
+margin-right:1px;		
+}
+.two-column-form input{
+width:90%;
+margin-left:10px;	
+}
+
+.two-column-form textarea{
+width:90%;
+margin-left:10px;	
+}
+
+.main-forms-container{
+	background-color:#222;
+	color:#fff;
+	padding:20px 30px 20px 30px;
+	width:inherit;
+	border-radius:5px;
+	min-width:100px;
+}
+
+.main-forms-container input{
+	background-color:#C2C2C2;
+	color:#000;
+}
+
+.main-forms-container label{
+	padding-right:10px;
+}
+
+.icons a{
+	color:#333;
+	text-decoration:none;
+}
+
+.icons a:hover{
+	text-decoration:none;
+	color:#9d9d9d;
+}
+
+.icons button{
+	border:0px;
+	background:transparent;
+}
+
+
+
+.icons-inverse a{
+	color:#9d9d9d;
+	text-decoration:none;
+}
+
+.icons-inverse a:hover{
+	text-decoration:none;
+	color:#fff;
+}
+
+.symetric-container{
+	min-width:100px;
+	display:block;
+	margin:auto;
+	
+}
+
+.custom-table thead{
+background-color:#898989;
+color:#fff;
+	
+}
+
+.custom-table thead th{
+border:solid 1px;
+border-color:#fff;
+	
+}
+
+.video-container{
+	min-width:100px;
+	
+}
+.video{
+	width:100%;
+	height:auto;
+}
+
+.center-horizontaly{
+	 margin: auto;
+}
+
+.center-verticaly-container{
+  display: table;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+	 
+}
+.center-verticaly{
+	display: table-cell;
+   vertical-align: middle;
+   padding-left:35px; 
+   padding-right:35px;
+   padding-top:20px;
+   padding-bottom:20px;
+   
+}
+
+.date-pick{
+	
+width:93%;	
+}
+
+.upload_button{
+width:32px; 
+height:28px;	
+}
+
+.table_img{
+width:30%;
+border-radius:30%;
+}
+
+.error_container{
+	max-width:400px;
+	min-width:100px;
+	background-color:#F2F2F2;
+	border-radius:20px;
+	color:#9E9E9E;
+	font-size:16pt;
+
+}
+
+.btn-info:hover{
+background-color:#0099ff;
+}

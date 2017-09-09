@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+{% load static %}
+{% load widget_tweaks %}
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="{% static 'hound/images/favicon.ico' %}">
+ <link href="{% static 'hound/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'hound/css/bootstrap-datetimepicker.min.css' %}" rel="stylesheet">
+ <link rel="stylesheet" href="{% static 'hound/fonts/font-awesome/css/font-awesome.min.css' %}">
+ <link href="{% static 'hound/css/custom.css' %}" rel="stylesheet">
+
+</head>
+<body>
+
+<div class="jumbotron">
+  <div class="container-fluid ">
+    <ul class="nav navbar-nav" style="margin-left:1px;">
+     <a href="/drivers/0/0/"><img src="{% static 'hound/images/hound-icon.png' %}" class="header-img" /></a>
+        <br><br>&nbsp;&nbsp;<a href="/add_driver/1/" style="font-size:12pt;">ESP</a>
+    </ul>
+		  <ul class="nav navbar-nav navbar-right second-menu-icons" style="margin-left:2px;">
+		<a href="/logout/0/" style="font-size:14pt;">Log out</a>
+		<br><div class="navbar-right" style="margin-right:2px;"><a href="/settings/0/" ><i class="fa fa-cog" aria-hidden="true"></i></a></div>
+    </ul>
+	<br>
+  </div>
+</div>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <ul class="nav navbar-nav">
+      <li><a href="/trip_status/0/">Track</a></li>
+      <li><a href="#">Monitor</a></li>
+      <li class="active"><a href="/drivers/0/0/">Assets</a></li>
+    </ul>
+  </div>
+</nav>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <ul class="nav navbar-nav second-menu-icons">
+      <li><a href="/vehicles/0/0/"><i class="fa fa-car" aria-hidden="true"></i></a></li>
+	   <li><a href="/trailers/0/0/"><i class="fa fa-truck" aria-hidden="true"></i></a></li>
+	   <li class="active"><a href="/driver/0/0/"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a></li>
+	    <li><a href="/archiver_drivers/0/1/"><i class="fa fa-folder-open" aria-hidden="true"></i></a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+<br>
+<br>
+  <div class="center-horizontaly" style="max-width:1100px;">
+
+  <div class="form-horizontal form-container">
+                          {% if messages%}
+     {% for message in messages %}
+    <div class="alert alert-danger">
+  <strong>Error!</strong>
+        {{ message }}
+</div>
+    {% endfor %}
+    {% endif %}
+  <h3>
+  Add Driver Profile
+  </h3>
+  		<div class="form-inline icons-inverse navbar-right" style="font-size:15px; margin-right:-10px;">
+			<a data-target="#rfc_curp" data-toggle="collapse" onclick="hide_element('id')" id="link">RFC/CURP</a>
+		</div>
+		
+  <br>
+  <br>
+
+<div class="row">
+  	 <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2" style="font-size:30px;">
+         <center>
+         <label style="font-size:20px;">Profile Image</label>
+
+
+	 <img class="img-responsive form-img" src="{% static profile %}" style="width:150px; height:150px; border-radius:150px;">
+
+	   <div class="form-inline icons-inverse text-left">
+	    <form action="/profile_driver/0/{{assigned_id}}/0/" method="post" id="profileForm" enctype="multipart/form-data">
+            {% csrf_token %}
+
+	       <a href="#" onclick="select_file()"><i class="fa fa-camera" aria-hidden="true"></i></a>
+
+		<div style="display:none;">{{formProfile.profile|add_class:'form-control'|attr:'onchange:upload_file();'}}</div>
+          </form>
+		</div>
+          </center>
+	 <br>
+         <center>
+           <label style="font-size:20px;">Finger Prints</label>
+
+	  <img class="img-responsive form-img" src="{% static prints %}" style="width:150px; height:150px; border-radius:150px;">
+	    <div class="form-inline icons-inverse text-left" style="font-size:30px;">
+		 <form action="/prints_driver/0/{{assigned_id}}/0/" method="post" id="printsForm" enctype="multipart/form-data">
+              {% csrf_token %}
+	        <a href="#" onclick="select_file_prints()"><i class="fa fa-camera" aria-hidden="true"></i></a>
+		<div style="display:none;">{{formPrints.prints|add_class:'form-control'|attr:'onchange:upload_file_prints();'}}</div>
+          </form>
+		</div>
+		</center>
+	  <br>
+	  <br>
+	</div>
+     <form action="/add_driver/0/" method="post">
+
+    {% csrf_token %}
+ <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+    <div class="form-group two-column-form">
+    <label class="control-label col-sm-4" >Assigned Id:</label>
+    <div class="col-sm-8">
+        {{formDriver.assigned_id|add_class:'form-control'|attr:'placeholder:Assigned Id'|attr:'disabled'}}
+    </div>
+  </div>
+   <div class="form-group two-column-form" id="id">
+    <label class="control-label col-sm-4" >Id:</label>
+    <div class="col-sm-8">
+        {% render_field formDocuments.id type="text" class="form-control" placeholder="Id" id="id"%}
+    </div>
+  </div>
+      <div class="collapse" id="rfc_curp">
+    <div class="form-group two-column-form">
+    <label class="control-label col-sm-4" >RFC:</label>
+    <div class="col-sm-8">
+        {% render_field formDocuments.rfc class="form-control" placeholder="RFC" %}
+    </div>
+  </div>
+      <div class="form-group two-column-form">
+    <label class="control-label col-sm-4" >CURP:</label>
+    <div class="col-sm-8">
+        {% render_field formDocuments.curp class="form-control" placeholder="CURP" %}
+    </div>
+  </div>
+  </div>
+    <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">*Name:</label>
+    <div class="col-sm-8">
+     {{formDriver.name|add_class:'form-control'|attr:"placeholder:Name"|attr:'required'}}
+    </div>
+  </div>
+      <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">*Lastname:</label>
+    <div class="col-sm-8">
+         {{formDriver.last_name|add_class:'form-control'|attr:"placeholder:Last Name"|attr:'required'}}
+    </div>
+  </div>
+             <div class="form-group two-column-form">
+   <label class="control-label col-sm-4">Middle Name:</label>
+    <div class="col-sm-8">
+        {{formDriver.middle_name|add_class:'form-control'|attr:'placeholder:Middle Name'}}
+    </div>
+  </div>
+
+
+       <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Date of Birth:</label>
+    <div class="col-sm-8">
+	 <div class='input-group date date-pick datepicker' data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                     {% render_field formDriver.date_of_birth class="form-control" placeholder="Date of birth" %}
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+    </div>
+  </div>
+
+            <div class="form-group two-column-form">
+   <label class="control-label col-sm-4">Email Address:</label>
+    <div class="col-sm-8">
+        {{formDriver.email_address|add_class:'form-control'|attr:'placeholder:Email Address'}}
+    </div>
+  </div>
+
+
+         <div class="form-group two-column-form">
+    <label class="control-label col-sm-4" style="border-bottom:solid 1px; border-color:gray;">Place of Birth</label>
+    <div class="col-sm-8" >
+
+    </div>
+  </div>
+
+
+         <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Country</label>
+    <div class="col-sm-8">
+        {{formDriver.country|add_class:'form-control'|attr:'placeholder:Country'}}
+    </div>
+  </div>
+
+              <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">State</label>
+    <div class="col-sm-8">
+        {{formDriver.state|add_class:'form-control'|attr:'placeholder:State'}}
+    </div>
+  </div>
+
+              <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">City</label>
+    <div class="col-sm-8">
+        {{formDriver.city|add_class:'form-control'|attr:'placeholder:City'}}
+    </div>
+  </div>
+
+
+             <div class="form-group two-column-form">
+    <label class="control-label col-sm-4" style="border-bottom:solid 1px; border-color:gray;">Address</label>
+    <div class="col-sm-8">
+
+    </div>
+  </div>
+
+              <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Country:</label>
+    <div class="col-sm-8" >
+        {{formAddress.country_addr|add_class:'form-control'|attr:'placeholder:Country'}}
+    </div>
+  </div>
+
+
+              <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">State:</label>
+    <div class="col-sm-8">
+        {{formAddress.state_addr|add_class:'form-control'|attr:'placeholder:State'}}
+    </div>
+  </div>
+
+
+
+  </div>
+   <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+
+                       <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">City:</label>
+    <div class="col-sm-8">
+        {{formAddress.city_addr|add_class:'form-control'|attr:'placeholder:City'}}
+    </div>
+  </div>
+
+
+          <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Street:</label>
+    <div class="col-sm-8">
+        {{formAddress.street|add_class:'form-control'|attr:'placeholder:Street'}}
+    </div>
+  </div>
+
+          <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Zip Code:</label>
+    <div class="col-sm-8">
+        {%render_field formAddress.zip_code id="zip_code" class="form-control" placeholder="Zip Code" type="text"%}
+
+    </div>
+  </div>
+
+                <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Ext:</label>
+    <div class="col-sm-8">
+     {% render_field formAddress.ext id="ext" class="form-control" placeholder="Ext" type="text"%}
+    </div>
+  </div>
+
+           <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Main Phone Number:</label>
+    <div class="col-sm-8">
+        {% render_field formAddress.phone_number id="phone_number" class="form-control" placeholder="Phone Number" type="text"%}
+    </div>
+  </div>
+
+
+                  <div class="form-group two-column-form">
+    <label class="control-label col-sm-4" style="border-bottom:solid 1px; border-color:gray;" >Documents</label>
+    <div class="col-sm-8">
+
+    </div>
+  </div>
+
+   <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">License No:</label>
+    <div class="col-sm-8">
+        {{formDocuments.license_no|add_class:'form-control'|attr:'placeholder:License No.'}}
+    </div>
+  </div>
+      <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">License Type:</label>
+    <div class="col-sm-8">
+        {{formDocuments.license_type|add_class:'form-control'|attr:'placeholder:License Type'}}
+    </div>
+  </div>
+
+         <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">License Issue Date:</label>
+    <div class="col-sm-8">
+         <div class='input-group date date-pick datepicker' data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                    {% render_field formDocuments.license_issue_date class="form-control" placeholder="License issue date" %}
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+    </div>
+  </div>
+
+      <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">License Exp Date:</label>
+    <div class="col-sm-8">
+         <div class='input-group date date-pick datepicker' data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                    {% render_field formDocuments.license_exp_date class="form-control" placeholder="License Exp. Date"%}
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+    </div>
+  </div>
+     <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Passport No:</label>
+    <div class="col-sm-8">
+        {{formDocuments.passport_no|add_class:'form-control'|attr:'placeholder:Passport No'}}
+    </div>
+  </div>
+         <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Passport Issue Date:</label>
+    <div class="col-sm-8">
+         <div class='input-group date date-pick datepicker' data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                    {% render_field formDocuments.passport_issue_date class="form-control" placeholder="Passport issue date"%}
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+    </div>
+  </div>
+
+      <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Passport Exp Date:</label>
+    <div class="col-sm-8">
+         <div class='input-group date date-pick datepicker' data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                    {% render_field formDocuments.passport_exp_date class="form-control" placeholder="Passport exp. date"%}
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+    </div>
+  </div>
+
+      <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">Start Date:</label>
+    <div class="col-sm-8">
+
+                <div class='input-group date date-pick datepicker' data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                    {%render_field formStatus.start_date class="form-control" placeholder="Start Date"%}
+
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+
+    </div>
+  </div>
+   <div class="form-group" style="padding-left:45px;">
+				 <div class="checkbox">
+				<label>
+                    {{formDocuments.dot}}<strong>Dot</strong>
+                </label>
+			</div>
+  </div>
+         <div class="form-group" style="padding-left:45px;">
+				 <div class="checkbox">
+				<label>
+                   {{formDocuments.criminal_record}}<strong>Criminal Record</strong>
+                </label>
+			</div>
+  </div>
+
+ <br>
+    <div class="form-inline two-column-form navbar-right">
+ <button type="submit" class="btn btn-primary">Add</button>
+        <a href="/drivers/0/0/"><button type="button" class="btn btn-primary">Cancel</button></a>
+ </div>
+  </div>
+  </form>
+  </div>
+  </div>
+</div>
+</div>
+<br>
+<br>
+</div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+ <script src="{% static 'hound/js/bootstrap.min.js' %}"></script>
+ <script src="{% static 'hound/js/bootstrap-datetimepicker.js' %}"></script>
+ <script src="{% static 'hound/locales/bootstrap-datetimepicker.fr.js' %}"></script>
+ <script src="{% static 'hound/js/events.js' %}"></script>
+<script src="{% static 'hound/js/upload_img_profile.js' %}"></script>
+<script src="{% static 'hound/js/upload_img_prints.js' %}"></script>
+ <script src="{% static 'hound/js/datepicker.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+{% load static %}
+{% load widget_tweaks %}
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="{% static 'hound/images/favicon.ico' %}">
+ <link href="{% static 'hound/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'hound/css/bootstrap-datetimepicker.min.css' %}" rel="stylesheet">
+ <link rel="stylesheet" href="{% static 'hound/fonts/font-awesome/css/font-awesome.min.css' %}">
+ <link href="{% static 'hound/css/custom.css' %}" rel="stylesheet">
+
+</head>
+<body>
+
+<div class="jumbotron">
+  <div class="container-fluid ">
+    <ul class="nav navbar-nav" style="margin-left:1px;">
+     <a href="/drivers/0/0/"><img src="{% static 'hound/images/hound-icon.png' %}" class="header-img" /></a>
+        <br><br>&nbsp;&nbsp;<a href="/add_vacations/1/{{assigned_id}}/" style="font-size:12pt;">ESP</a>
+    </ul>
+		  <ul class="nav navbar-nav navbar-right second-menu-icons" style="margin-left:2px;">
+		<a href="/logout/0/" style="font-size:14pt;">Log out</a>
+		<br><div class="navbar-right" style="margin-right:2px;"><a href="/settings/0/" ><i class="fa fa-cog" aria-hidden="true"></i></a></div>
+    </ul>
+	<br>		  
+  </div>
+</div>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <ul class="nav navbar-nav">
+      <li><a href="/trip_status/0/">Track</a></li>
+      <li><a href="#">Monitor</a></li>
+      <li class="active"><a href="/drivers/0/0/">Assets</a></li>
+    </ul>
+  </div>
+</nav>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <ul class="nav navbar-nav second-menu-icons">
+      <li><a href="/vehicles/0/0/"><i class="fa fa-car" aria-hidden="true"></i></a></li>
+	   <li><a href="/trailers/0/0/"><i class="fa fa-truck" aria-hidden="true"></i></a></li>
+	   <li class="active"><a href="/drivers/0/0/"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a></li>
+	    <li><a href="/archiver_drivers/0/1/"><i class="fa fa-folder-open" aria-hidden="true"></i></a></li>
+    </ul>
+  </div>
+</nav>
+<div class="container">
+<br>
+<br>
+  <div class="center-horizontaly" style="max-width:400px;">
+  <form class="form-horizontal form-container" action="/add_vacations/0/{{assigned_id}}/" method="post">
+
+
+                    {% if messages%}
+     {% for message in messages %}
+    <div class="alert alert-danger">
+  <strong>Error!</strong>
+        {{ message }}
+</div>
+    {% endfor %}
+    {% endif %}
+    {% csrf_token %}
+  <h3>
+  Add Vacation Cycle
+  </h3>
+  <br>
+<div class="row">
+	
+ <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+	
+	    <div class="form-group two-column-form">
+    <label class="control-label col-sm-4" style="padding-right:10px;">*Year:</label>
+    <div class="col-sm-3" style="margin-right:60px; margin-left:10px;">
+        {% render_field formVacations.year class="form-control" placeholder="Year" %}
+    </div>
+  </div>
+	
+    <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">*No. of Days:</label>
+    <div class="col-sm-8">
+        {% render_field formVacations.no_days class="form-control" type="text" placeholder="No. of Days" %}
+    </div>
+  </div>
+      <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">*Payment Rate:</label>
+    <div class="col-sm-8">
+        {% render_field formVacations.payment_rate class="form-control" type="text" placeholder="Payment Rate" %}
+    </div>
+  </div>
+
+	    <div class="form-group two-column-form">
+    <label class="control-label col-sm-4" style="padding-right:10px;">*Exchange Rate:</label>
+    <div class="col-sm-3" style="margin-right:60px; margin-left:10px;">
+        {% render_field formVacations.exchange_rate class="form-control" placeholder="Exchange Rate" %}
+    </div>
+  </div>
+
+      <div class="form-group two-column-form">
+    <label class="control-label col-sm-4">*Amount Payed:</label>
+    <div class="col-sm-8">
+        {%render_field formVacations.amount_payed class="form-control" type="text" placeholder="Amount Payed" %}
+    </div>
+  </div>
+ <div class="form-inline two-column-form navbar-right">
+ <button type="submit" class="btn btn-primary">Add</button>
+     <a href="/vacations/0/{{assigned_id}}/0/"><button type="button" class="btn btn-primary">Cancel</button></a>
+ </div>
+  </div>
+  </div>
+</form>
+</div>
+ 
+<br>
+<br>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+ <script src="{% static 'hound/js/bootstrap.min.js' %}"></script>
+</body>
+</html>
