@@ -49,6 +49,27 @@ class DirectoryView:
                 if Driver.objects.filter(user_id =request.session['id']).filter(assigned_id = assigned_id).exists():
                     user = User.objects.get(user_id = request.session['id'])
                     directory = formDirectory.save(commit = False)
+
+                    if Validator.check_pattern_phone_number(directory.phone_number) == True:
+                        error = 'Phone Number must not contain symbols'
+
+                        if int(lenguage) == 1:
+                            error = 'Número de teléfono no debe de contener simbolos'
+
+                        messages.error(request, error)
+
+                        values = {'table': table_directory,
+                                  'assigned_id': assigned_id,
+                                  'lenguage': lenguage,
+                                  'empty': empty,
+                                  'formDirectory': formDirectory,
+                                  'driver': driver_profile,
+                                  'state': False
+                                  }
+                        return render(request, directory_template, values)
+
+
+
                     directory.user_id = user
                     directory.assigned_id = assigned_id
                     directory.save()

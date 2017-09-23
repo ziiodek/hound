@@ -133,6 +133,27 @@ class TrailerView:
                         if int(lenguage) == 1:
                             error = 'Número de placas debe de tener de 5 a 10 caracteres'
 
+                    if Validator.check_pattern(trailer.plate_no) == True:
+                        error = 'Plate number must not have symbols'
+
+                        if int(lenguage == 1):
+                            error = 'Número de placas no debe de contener simbolos'
+
+                if Validator.check_pattern(trailer.client_name) == True:
+                    error = 'Client Name must not have symbols'
+                    if int(lenguage == 1):
+                        error = 'Nombre de cliente no debe de contener simbolos'
+
+                if Validator.check_pattern(trailer.client_last_name) == True:
+                    error = 'Client Lastname must not have symbols'
+                    if int(lenguage == 1):
+                        error = 'Apellido de cliente no debe de contener simbolos'
+
+                if trailer.capacity != None and trailer.capacity < 0:
+                    error = 'Capacity must be a positive number'
+
+                    if int(lenguage) == 1:
+                        error = 'Capacidad debe de ser un número'
 
                 if error == '':
                     if User.objects.filter(user_id=user_id).exists():
@@ -215,12 +236,34 @@ class TrailerView:
 
                 error = ''
 
-                if trailer.plate_no != '':
-                    if len(trailer.plate_no) < 5 or len(trailer.plate_no) > 10:
+                if tmp.plate_no != '':
+                    if len(tmp.plate_no) < 5 or len(tmp.plate_no) > 10:
                         error = 'Plate number must have 5 to 10 character length'
 
                         if int(lenguage) == 1:
                             error = 'Número de placas debe de tener de 5 a 10 caracteres'
+
+                    if Validator.check_pattern(tmp.plate_no) == True:
+                        error = 'Plate number must not have symbols'
+
+                        if int(lenguage == 1):
+                            error = 'Número de placas no debe de contener simbolos'
+
+                if Validator.check_pattern(tmp.client_name) == True:
+                    error = 'Client Name must not have symbols'
+                    if int(lenguage == 1):
+                        error = 'Nombre de cliente no debe de contener simbolos'
+
+                if Validator.check_pattern(tmp.client_last_name) == True:
+                    error = 'Client Lastname must not have symbols'
+                    if int(lenguage == 1):
+                        error = 'Apellido de cliente no debe de contener simbolos'
+
+                if tmp.capacity < 0:
+                    error = 'Capacity must be a positive number'
+
+                    if int(lenguage) == 1:
+                        error = 'Capacidad debe de ser un número'
 
                 if error == '':
                     country = request.POST.get("country_select")
@@ -750,7 +793,7 @@ class TrailerView:
         return table
 
     def load_tmp_profile(user_id, economic_no):
-        database = pymysql.connect('localhost', 'hound_admin', 'N1nj@ k1tty', 'hound_db')
+        database = pymysql.connect('localhost', 'root', '', 'hound_db')
         cursor = database.cursor()
         src = 'hound/images/default.jpg'
 

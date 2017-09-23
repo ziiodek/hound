@@ -11,6 +11,9 @@ from ..models.documents import *
 from ..models.driver_status import *
 from ..models.profile import *
 from ..models.prints import *
+from ..models.directory import *
+from ..models.vacations import *
+from ..models.date import *
 from ..src.id_generator import IdGenerator
 from ..src.xls_generator import XlsGenerator
 from ..src.validator import Validator
@@ -127,6 +130,98 @@ class DriverView:
         else:
             return render(request,'hound-eng/error.html',{'error':error_driver})
 
+
+    def symbols_validator(lenguage,driver,address,documents):
+        error = ''
+
+        if Validator.check_pattern(driver.name) == True:
+            error = 'Name must not have symbols'
+
+            if lenguage == 1:
+                error = 'Nombre no debe de contener simbolos'
+
+        if Validator.check_pattern(driver.last_name) == True:
+            error = 'Lastname must not have symbols'
+
+            if int(lenguage) == 1:
+                error = 'Apellido de debe de contener simbolos'
+
+        if Validator.check_pattern(driver.country) == True or Validator.check_pattern(address.country_addr) == True:
+            error = 'Country must not have symbols'
+
+            if int(lenguage) == 1:
+                error = 'País no debe de contener simbolos'
+
+        if Validator.check_pattern(driver.state) == True or Validator.check_pattern(address.state_addr) == True:
+            error = 'State must not have symbols'
+
+            if int(lenguage) == 1:
+                error = 'Estado no debe de contener simbolos'
+
+        if Validator.check_pattern(driver.city) == True or Validator.check_pattern(address.city_addr) == True:
+            error = 'City must not have symbols'
+
+            if int(lenguage) == 1:
+                error ='Ciudad no debe de contener simbolos'
+
+        if Validator.check_pattern(documents.id) == True:
+            error = 'Id must not have symbols'
+
+            if int(lenguage) == 1:
+                error = 'Id no debe de contener simbolos'
+
+        if Validator.check_pattern(documents.rfc) == True:
+            error = 'RFC must not have symbols'
+
+            if int(lenguage) == 1:
+                error = 'RFC no debe de contener simbolos'
+
+        if Validator.check_pattern(documents.curp) == True:
+            error = 'CURP must not have symbols'
+
+            if int(lenguage) == 1:
+                error = 'CURP no debe de contener simbolos'
+
+        if Validator.check_pattern(documents.license_no) == True:
+            error = 'License No. must not have symbols'
+
+            if int(lenguage) == 1:
+                error = 'No. de licencia no debe de contener simbolos'
+
+        if Validator.check_pattern(documents.license_type) == True:
+            error = 'License type must not have symbols'
+
+            if int(lenguage) == 1:
+                error = 'Tipo de licencia no debe de contener simbolos'
+
+        if Validator.check_pattern(documents.passport_no) == True:
+            error = 'Passport No. must not have symbols'
+            if int(lenguage) == 1:
+                error = 'No. de pasaporte no debe de contener simbolos'
+
+        if address.ext != None and Validator.check_pattern_ext(address.ext) == True:
+            error = 'Ext must not have symbols'
+
+            if int(lenguage) == 1:
+                error = 'Ext no debe de contener simbolos'
+
+        if Validator.check_pattern_phone_number(address.phone_number) == True:
+            error = 'Phone Number must not contain symbols'
+
+            if int(lenguage) == 1:
+                error = 'Número de teléfono no debe de contener simbolos'
+
+        if Validator.check_patter_street(address.street) == True:
+            error = 'Street must not contain symbols'
+            if int(lenguage) == 1:
+                error = 'Calle no debe de contener simbolos'
+
+        return error
+
+
+
+
+
     def add_driver(request,lenguage):
 
         email_template = '/email/0/'
@@ -213,6 +308,23 @@ class DriverView:
                 address = formAddress.save(commit=False)
                 documents = formDocuments.save(commit=False)
                 status = formStatus.save(commit=False)
+
+                error = DriverView.symbols_validator(lenguage,driver,address,documents)
+
+                if error != '':
+                    messages.error(request, error)
+                    return render(request, add_template,
+                                  {'formDriver': formDriver,
+                                   'formAddress': formAddress,
+                                   'formDocuments': formDocuments,
+                                   'formStatus': formStatus,
+                                   'formProfile': formProfile,
+                                   'formPrints': formPrints,
+                                   'profile': profile,
+                                   'prints': prints,
+                                   'assigned_id': assigned_id
+                                   })
+
                 error = DriverView.validate_documents(documents)
 
                 if int(lenguage) == 1:
@@ -369,7 +481,7 @@ class DriverView:
 
             if not formStatus.is_valid():
                 messages.error(request, formStatus.errors)
-                return render(request, add_template,
+                return render(request, edit_template,
                               {'formDriver': formDriver,
                                'formAddress': formAddress,
                                'formDocuments': formDocuments,
@@ -383,7 +495,7 @@ class DriverView:
 
             if not formDocuments.is_valid():
                 messages.error(request, formDocuments.errors)
-                return render(request, add_template,
+                return render(request, edit_template,
                               {'formDriver': formDriver,
                                'formAddress': formAddress,
                                'formDocuments': formDocuments,
@@ -397,7 +509,7 @@ class DriverView:
 
             if not formAddress.is_valid():
                 messages.error(request, formAddress.errors)
-                return render(request, add_template,
+                return render(request, edit_template,
                               {'formDriver': formDriver,
                                'formAddress': formAddress,
                                'formDocuments': formDocuments,
@@ -411,10 +523,28 @@ class DriverView:
 
             if formDriver.is_valid():
                 tmp = formDriver.save(commit=False)
-                print(tmp.country)
+                address = formAddress.save(commit = False)
                 documents = formDocuments.save(commit = False)
 
+                error = DriverView.symbols_validator(lenguage, tmp, address, documents)
+
+                if error != '':
+                    messages.error(request, error)
+                    return render(request, edit_template,
+                                  {'formDriver': formDriver,
+                                   'formAddress': formAddress,
+                                   'formDocuments': formDocuments,
+                                   'formStatus': formStatus,
+                                   'formProfile': formProfile,
+                                   'formPrints': formPrints,
+                                   'profile': profile,
+                                   'prints': prints,
+                                   'assigned_id': assigned_id
+                                   })
+
                 error = DriverView.validate_documents(documents)
+
+
 
                 if int(lenguage) == 1:
                     error = DriverView.validate_documents_esp(documents)
@@ -1423,7 +1553,7 @@ class DriverView:
 
 
     def load_tmp_profile(user_id, assigned_id):
-        database = pymysql.connect('localhost', 'hound_admin', 'N1nj@ k1tty', 'hound_db')
+        database = pymysql.connect('localhost', 'root', '', 'hound_db')
         cursor = database.cursor()
         src = 'hound/images/default.jpg'
 
@@ -1451,7 +1581,7 @@ class DriverView:
         return src
 
     def load_tmp_prints(user_id, assigned_id):
-        database = pymysql.connect('localhost', 'hound_admin', 'N1nj@ k1tty', 'hound_db')
+        database = pymysql.connect('localhost', 'root', '', 'hound_db')
         cursor = database.cursor()
         src = 'hound/images/default.jpg'
 
@@ -1594,7 +1724,7 @@ class DriverView:
 
 
     def save_profile(user_id, assigned_id):
-        database = pymysql.connect('localhost', 'hound_admin', 'N1nj@ k1tty', 'hound_db')
+        database = pymysql.connect('localhost', 'root', '', 'hound_db')
         cursor = database.cursor()
         cursor.execute("select path from hound_profile where user_id='%s' and type='%s' and gen_id='%d';" % (user_id, 'driver', int(assigned_id)))
         if cursor.rowcount > 0:
@@ -1612,7 +1742,7 @@ class DriverView:
         database.close()
 
     def save_prints(user_id, assigned_id):
-        database = pymysql.connect('localhost', 'hound_admin', 'N1nj@ k1tty', 'hound_db')
+        database = pymysql.connect('localhost', 'root', '', 'hound_db')
         cursor = database.cursor()
         cursor.execute("select path from hound_prints where user_id='%s' and gen_id='%d';" % (user_id, int(assigned_id)))
         if cursor.rowcount > 0:

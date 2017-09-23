@@ -135,7 +135,7 @@ class AuthenticationView:
                 return response
             else:
                 messages.error(request, error)
-                return render(request, password, {'passwordForm': passwordForm})
+                return render(request, password_template, {'passwordForm': passwordForm})
 
         if AuthenticationView.atemps == 5:
             AuthenticationView.current_time = time()
@@ -216,10 +216,12 @@ class AuthenticationView:
 
         if request.method == 'POST':
             registrationForm = RegistrationForm(request.POST)
-            print(registrationForm.is_valid())
             if registrationForm.is_valid():
+
                 email = registrationForm.cleaned_data['email']
+
                 if not User.objects.filter(email=email).exists():
+
                     if Authenticator.validate_email(email) == False:
 
                         if Authenticator.validate_email_form(email) != '':
@@ -233,6 +235,26 @@ class AuthenticationView:
                             return render(request, template, {'registrationForm': registrationForm})
 
                         user = registrationForm.save(commit=False)
+
+                        if Validator.check_pattern(user.name) == True:
+                            error = 'Name must not have symbols'
+
+                            if int(lenguage) == 1:
+                                error = 'Nombre no debe de contener simbolos'
+
+                            messages.error(request, error)
+                            return render(request, template, {'registrationForm': registrationForm})
+
+                        if Validator.check_pattern(user.last_name) == True:
+                            error = 'Lastname must not have symbols'
+
+                            if int(lenguage) == 1:
+                                error = 'Apellido no debe de contener simbolos'
+
+                            messages.error(request, error)
+                            return render(request, template, {'registrationForm': registrationForm})
+
+
                         error = Authenticator.validate_password(password)
                         if error == '':
                             user.password = Authenticator.hashPassword(email,password)
@@ -256,6 +278,11 @@ class AuthenticationView:
                         if int(lenguage) == 1:
                             error = "El correo electrónico ya existe"
                         messages.error( request, error )
+                else:
+                    error = "Email address alredy exists"
+                    if int(lenguage) == 1:
+                        error = "El correo electrónico ya existe"
+                    messages.error(request,error)
             else:
                 messages.error(request,registrationForm.errors)
         return render(request,template,{'registrationForm':registrationForm})

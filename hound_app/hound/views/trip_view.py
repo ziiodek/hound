@@ -249,8 +249,6 @@ class TripView:
                             messages.error(request, error_trailer)
                             status = False
 
-
-
                     if status == True:
                         trip.trip_id = trip_id
                         trip.save()
@@ -259,6 +257,8 @@ class TripView:
                     messages.error(request,error)
             else:
                 messages.error(request,formTrip.errors)
+
+
 
         return render(request,edit_template,{'formTrip':formTrip,
                                                             'vehicle':vehicle,

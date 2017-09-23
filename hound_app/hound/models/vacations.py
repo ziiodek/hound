@@ -8,7 +8,7 @@ import datetime
 
 class Vacations(models.Model):
     year = []
-    coin = (('DLL','DLL'),('MXN','MXN'),)
+    coin = (('USD','USD'),('MXN','MXN'),)
     for y in range(1900, int((datetime.datetime.now( ).year + 20)) ):
         year.append( (y, y) )
 
@@ -22,7 +22,7 @@ class Vacations(models.Model):
     taken_days = models.IntegerField(default=0,blank=True,null=True)
     amount_payed = models.IntegerField(default=0,blank=False)
     payed = models.BooleanField(default=False,blank=True)
-    exchange_rate = models.CharField(default='DLL',max_length=5,blank=False,choices=coin)
+    exchange_rate = models.CharField(default='USD',max_length=5,blank=False,choices=coin)
 
     def __str__(self):
         attributes = []

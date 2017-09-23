@@ -2,6 +2,52 @@ from ..models.user import User
 
 class Validator:
 
+    def check_pattern(string):
+        pattern = set('~`@#$%^&*()_-=+[]{}\/,."<>?|')
+        if any((c in pattern) for c in string):
+            return True
+
+        for c in string:
+            if c == "'":
+                return True
+
+        return False
+
+    def check_pattern_phone_number(phone_number):
+        pattern = set('~`@#$%^&*()_=[]{}\/,."<>?|')
+        if any((c in pattern) for c in phone_number):
+            return True
+
+        for c in phone_number:
+            if c == "'":
+                return True
+
+        return False
+
+    def check_patter_street(street):
+        pattern = set('~`@$%^&*()_=+[]{}\/"<>?|')
+        if any((c in pattern) for c in street):
+            return True
+
+        for c in street:
+            if c == "'":
+                return True
+
+        return False
+
+    def check_pattern_ext(ext):
+        pattern = set('~`@#$%^&*()_-=[]{}\/,."<>?|')
+        if any((c in pattern) for c in ext):
+            return True
+
+        for c in ext:
+            if c == "'":
+                return True
+
+        return False
+
+
+
     def validate_integer(id,lower,upper):
         if id < lower or id > upper :
             return False

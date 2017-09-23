@@ -134,12 +134,48 @@ class VehicleView:
                         if int(lenguage) == 1:
                             error = 'Vin debe de tener 17 caracteres'
 
+                    if Validator.check_pattern(vehicle.vin) == True:
+                        error = 'Vin number must not have symbols'
+
+                        if int(lenguage == 1):
+                            error = 'Vin no debe de contener simbolos'
+
+                if Validator.check_pattern(vehicle.brand) == True:
+                    error = 'Brand must not have symbols'
+
+                    if int(lenguage) == 1:
+                        error = 'Marca no debe de contener simbolos'
+
+                if Validator.check_pattern(vehicle.model) == True:
+                    error = 'Model must not have symbols'
+
+                    if int(lenguage) == 1:
+                        error = 'Modelo no debe de contener simbolos'
+
+                if Validator.check_pattern(vehicle.type) == True:
+                    error = 'Type must not contain symbols'
+
+                    if int(lenguage) == 1:
+                        error = 'Tipo no debe de contener simbolos'
+
+                if Validator.check_pattern(vehicle.status) == True:
+                    error = 'Status must not have symbols'
+
+                    if int(lenguage) == 1:
+                        error = 'Condición no debe de tener simbolos'
+
+
                 if vehicle.plate_no != '':
                     if len(vehicle.plate_no) < 5 or len(vehicle.plate_no) > 10:
                         error = 'Plate number must have 5 to 10 character length'
                         if int(lenguage) == 1:
                             error = 'Número de placas debe de tener de 5 a 10 caracteres'
 
+                    if Validator.check_pattern(vehicle.plate_no) == True:
+                        error = 'Plate number must not have symbols'
+
+                        if int(lenguage == 1):
+                            error = 'Número de placas no debe de contener simbolos'
 
                 if error == '':
                     if User.objects.filter(user_id=user_id).exists():
@@ -229,11 +265,47 @@ class VehicleView:
                         if int(lenguage) == 1:
                             error = 'Vin debe de tener 17 caracteres'
 
+                    if Validator.check_pattern(tmp.vin) == True:
+                        error = 'Vin must not have symbols'
+
+                        if int(lenguage == 1):
+                            error = 'Vin no debe de contener simbolos'
+
+                if Validator.check_pattern(vehicle.brand) == True:
+                    error = 'Brand must not have symbols'
+
+                    if int(lenguage) == 1:
+                        error = 'Marca no debe de contener simbolos'
+
+                if Validator.check_pattern(vehicle.model) == True:
+                    error = 'Model must not have symbols'
+
+                    if int(lenguage) == 1:
+                        error = 'Modelo no debe de contener simbolos'
+
+                if Validator.check_pattern(vehicle.type) == True:
+                    error = 'Type must not contain symbols'
+
+                    if int(lenguage) == 1:
+                        error = 'Tipo no debe de contener simbolos'
+
+                if Validator.check_pattern(vehicle.status) == True:
+                    error = 'Status must not have symbols'
+
+                    if int(lenguage) == 1:
+                        error = 'Condición no debe de tener simbolos'
+
                 if tmp.plate_no != '':
                     if len(tmp.plate_no) < 5 or len(tmp.plate_no) > 10:
                         error = 'Plate number must have 5 to 10 character length'
                         if int(lenguage) == 1:
                             error = 'Número de Placas debe de tener de 5 a 10 caracteres'
+
+                    if Validator.check_pattern(tmp.plate_no) == True:
+                        error = 'Plate number must not have symbols'
+
+                        if int(lenguage == 1):
+                            error = 'Número de placas no debe de contener simbolos'
 
                 if error == '':
                     country = request.POST.get("country_select")
@@ -731,7 +803,7 @@ class VehicleView:
 
 
     def load_tmp_profile(user_id, economic_no):
-        database = pymysql.connect('localhost', 'hound_admin', 'N1nj@ k1tty', 'hound_db')
+        database = pymysql.connect('localhost', 'root', '', 'hound_db')
         cursor = database.cursor()
         src = 'hound/images/default.jpg'
 
@@ -812,7 +884,7 @@ class VehicleView:
                 return render(request,'hound-eng/error.html',{'error':'Internal error, Invalid state'})
 
     def save_profile(user_id,economic_no):
-        database = pymysql.connect('localhost', 'hound_admin', 'N1nj@ k1tty', 'hound_db')
+        database = pymysql.connect('localhost', 'root', '', 'hound_db')
         cursor = database.cursor()
         cursor.execute("select path from hound_profile where user_id='%s' and type='%s' and gen_id='%d';" % (user_id,'vehicle',int(economic_no)))
         if cursor.rowcount > 0:

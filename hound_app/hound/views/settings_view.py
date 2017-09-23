@@ -54,6 +54,30 @@ class SettingsView:
             formSettings = SettingsForm(request.POST)
             if formSettings.is_valid():
                 tmp = formSettings.save(commit=False)
+                error = ''
+
+                if Validator.check_pattern(tmp.name) == True:
+                    error = 'Name must not have symbols'
+                    if int(lenguage) == 1:
+                        error = 'Nombre no debe de contener symbolos'
+
+                    messages.error(request,error)
+                    return render(request, settings, {'formSettings': formSettings,
+                                                      'formProfile': formProfile,
+                                                      'profile': profile})
+
+                if Validator.check_pattern(tmp.last_name) == True:
+                    error = 'Lastname must not have symbols'
+
+                    if int(lenguage) == 1:
+                        error = 'Apellido no debe de contener simbolos'
+
+                    messages.error(request,error)
+                    return render(request, settings, {'formSettings': formSettings,
+                                                      'formProfile': formProfile,
+                                                      'profile': profile})
+
+
                 user = User.objects.get(user_id=request.session['id'])
                 user.name = tmp.name
                 user.last_name = tmp.last_name
@@ -226,7 +250,7 @@ class SettingsView:
                         messages.error(request,error_passwords)
 
                 else:
-                    messages.error(request,formReset.errors)
+                    messages.error(request,formChangePassword.errors)
             return render(request,change_password,{'formChangePassword':formChangePassword,'hash':hash})
         else:
             Url.objects.get(url=hash).delete()

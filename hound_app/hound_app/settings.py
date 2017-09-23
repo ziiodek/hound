@@ -25,7 +25,7 @@ SECRET_KEY = 'ku0yj64q#_g35octi-77c9n5j9+5w2cn%=@!66_stm4a1yrj7v'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['hound.ziiodek.com']
+ALLOWED_HOSTS = ['hound.ziiodek.com','127.0.0.1']
 
 
 # Application definition
@@ -86,8 +86,8 @@ DATABASES = {
     'default': {
         'ENGINE':'django.db.backends.mysql',
         'NAME':'hound_db',
-        'USER':'hound_admin',
-        'PASSWORD':'N1nj@ k1tty',
+        'USER':'root',
+        'PASSWORD':'',
         'HOST':'localhost',
         'POST':'3306'
         #'ENGINE': 'django.db.backends.sqlite3',

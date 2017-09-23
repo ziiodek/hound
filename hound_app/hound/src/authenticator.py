@@ -73,9 +73,10 @@ class Authenticator:
         data = file.readlines()
         for line in data:
             words = line.split(':')
+            file.close()
             if words[0] == email:
+               print(words[0])
                return True
-        file.close()
         return False
 
 
