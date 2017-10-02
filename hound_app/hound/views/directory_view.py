@@ -270,7 +270,7 @@ class DirectoryView:
 
 
     def load_driver(user_id, assigned_id):
-        database = pymysql.connect('localhost', 'root', '', 'hound_db')
+        database = pymysql.connect('localhost', 'hound_admin', 'N1nj@ k1tty', 'hound_db')
         cursor = database.cursor()
         src = 'hound/images/default.jpg'
         cursor.execute("select profile_img from hound_driver where user_id_id='%s' and assigned_id='%d';" % (

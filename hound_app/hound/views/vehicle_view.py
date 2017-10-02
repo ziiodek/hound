@@ -803,7 +803,7 @@ class VehicleView:
 
 
     def load_tmp_profile(user_id, economic_no):
-        database = pymysql.connect('localhost', 'root', '', 'hound_db')
+        database = pymysql.connect('localhost', 'hound_admin', 'N1nj@ k1tty', 'hound_db')
         cursor = database.cursor()
         src = 'hound/images/default.jpg'
 
@@ -884,7 +884,7 @@ class VehicleView:
                 return render(request,'hound-eng/error.html',{'error':'Internal error, Invalid state'})
 
     def save_profile(user_id,economic_no):
-        database = pymysql.connect('localhost', 'root', '', 'hound_db')
+        database = pymysql.connect('localhost', 'hound_admin', 'N1nj@ k1tty', 'hound_db')
         cursor = database.cursor()
         cursor.execute("select path from hound_profile where user_id='%s' and type='%s' and gen_id='%d';" % (user_id,'vehicle',int(economic_no)))
         if cursor.rowcount > 0:

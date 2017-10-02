@@ -1553,7 +1553,7 @@ class DriverView:
 
 
     def load_tmp_profile(user_id, assigned_id):
-        database = pymysql.connect('localhost', 'root', '', 'hound_db')
+        database = pymysql.connect('localhost', 'hound_admin', 'N1nj@ k1tty', 'hound_db')
         cursor = database.cursor()
         src = 'hound/images/default.jpg'
 
@@ -1581,7 +1581,7 @@ class DriverView:
         return src
 
     def load_tmp_prints(user_id, assigned_id):
-        database = pymysql.connect('localhost', 'root', '', 'hound_db')
+        database = pymysql.connect('localhost', 'hound_admin', 'N1nj@ k1tty', 'hound_db')
         cursor = database.cursor()
         src = 'hound/images/default.jpg'
 
@@ -1724,7 +1724,7 @@ class DriverView:
 
 
     def save_profile(user_id, assigned_id):
-        database = pymysql.connect('localhost', 'root', '', 'hound_db')
+        database = pymysql.connect('localhost', 'hound_admin', 'N1nj@ k1tty', 'hound_db')
         cursor = database.cursor()
         cursor.execute("select path from hound_profile where user_id='%s' and type='%s' and gen_id='%d';" % (user_id, 'driver', int(assigned_id)))
         if cursor.rowcount > 0:
@@ -1742,7 +1742,7 @@ class DriverView:
         database.close()
 
     def save_prints(user_id, assigned_id):
-        database = pymysql.connect('localhost', 'root', '', 'hound_db')
+        database = pymysql.connect('localhost', 'hound_admin', 'N1nj@ k1tty', 'hound_db')
         cursor = database.cursor()
         cursor.execute("select path from hound_prints where user_id='%s' and gen_id='%d';" % (user_id, int(assigned_id)))
         if cursor.rowcount > 0:
